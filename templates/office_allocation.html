@@ -24,13 +24,14 @@
 {% if allocations %}
 <h3>Allocations</h3>
 <table>
-    <tr><th>Student</th><th>Year</th><th>Room</th><th>Bed</th><th>Status</th></tr>
+    <tr><th>Student</th><th>Year</th><th>Room</th><th>Bed</th><th>Warden</th><th>Status</th></tr>
     {% for a in allocations %}
     <tr>
         <td>{{ a.user.name }}</td>
         <td>{{ a.application.year }}</td>
         <td>{{ a.bed.room.hostel.name }}, {{ a.bed.room.number }}</td>
         <td>{{ a.bed.number }}</td>
+        <td>{% if a.bed.room.hostel.warden %}{{ a.bed.room.hostel.warden.name }}{% else %}-{% endif %}</td>
         <td>{{ a.status }}</td>
     </tr>
     {% endfor %}
