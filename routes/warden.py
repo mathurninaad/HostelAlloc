@@ -60,7 +60,7 @@ def applications(request: Request, user=Depends(warden_only), db: Session = Depe
     items = []
     if cycle:
         items = db.query(Application).filter(
-            Application.cycle_id == cycle.id, Application.status != "draft"
+            Application.cycle_id == cycle.id, Application.status != "withdrawn"
         ).order_by(Application.id).all()
     ids = my_hostel_ids(db, user)
     return render(request, "warden_applications.html", user=user, items=items, cycle=cycle, ids=ids)

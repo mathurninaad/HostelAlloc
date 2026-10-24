@@ -12,7 +12,7 @@
         <p>Applications are {% if is_open %}open{% else %}closed{% endif %}.</p>
         {% if application %}
             <p>Your application status: <b>{{ status }}</b></p>
-            {% if application.status in ["draft", "submitted"] and not cycle.allocation_run %}
+            {% if application.status == "submitted" and not cycle.allocation_run %}
             <form method="post" action="/student/withdraw" class="inline">
                 <button type="submit">Withdraw application</button>
             </form>

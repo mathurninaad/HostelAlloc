@@ -29,7 +29,6 @@
     {% if cycle.allocation_run %}
         {% if criteria %}
         <p>Year order: {{ criteria.year_order }} first</p>
-        <p>Priority category: {% if criteria.priority_category %}{{ criteria.priority_category }}{% else %}none{% endif %}</p>
         <p>Use hostel preference: {% if criteria.use_preference %}yes{% else %}no{% endif %}</p>
         {% endif %}
     {% else %}
@@ -39,13 +38,6 @@
         <select name="year_order">
             <option value="senior" {% if criteria and criteria.year_order == "senior" %}selected{% endif %}>Senior students first</option>
             <option value="junior" {% if criteria and criteria.year_order == "junior" %}selected{% endif %}>Junior students first</option>
-        </select>
-        <label>Priority category (gets rooms before others)</label>
-        <select name="priority_category">
-            <option value="">None</option>
-            {% for c in categories %}
-            <option value="{{ c }}" {% if criteria and criteria.priority_category == c %}selected{% endif %}>{{ c }}</option>
-            {% endfor %}
         </select>
         <label>Try the student's preferred hostel first</label>
         <select name="use_preference">

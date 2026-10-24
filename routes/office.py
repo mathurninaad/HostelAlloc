@@ -9,7 +9,6 @@ from helpers import (
     render, go, flash, login_required, notify, log, current_cycle, window_open, ACTIVE_STATUSES,
 )
 from allocation import run_allocation
-from routes.student import CATEGORIES
 
 router = APIRouter(prefix="/office")
 office_only = login_required("office")
@@ -188,7 +187,7 @@ def cycle_page(request: Request, user=Depends(office_only), db: Session = Depend
     cycle = current_cycle(db)
     return render(
         request, "cycle.html", user=user, cycle=cycle, criteria=get_criteria(db, cycle),
-        categories=CATEGORIES, is_open=window_open(cycle), today=date.today(),
+        is_open=window_open(cycle), today=date.today(),
     )
 
 
@@ -257,7 +256,6 @@ def close_window(request: Request, user=Depends(office_only), db: Session = Depe
 def save_criteria(
     request: Request,
     year_order: str = Form("senior"),
-    priority_category: str = Form(""),
     use_preference: str = Form(""),
     user=Depends(office_only),
     db: Session = Depends(get_db),
@@ -271,7 +269,6 @@ def save_criteria(
         criteria = Criteria(cycle_id=cycle.id)
         db.add(criteria)
     criteria.year_order = year_order
-    criteria.priority_category = priority_category
     criteria.use_preference = use_preference == "yes"
     log(db, user.id, "Saved allocation criteria for " + cycle.name)
     db.commit()

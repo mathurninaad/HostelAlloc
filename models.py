@@ -70,7 +70,6 @@ class Criteria(Base):
     id = Column(Integer, primary_key=True)
     cycle_id = Column(Integer, ForeignKey("cycles.id"), nullable=False)
     year_order = Column(String, default="senior")
-    priority_category = Column(String, default="")
     use_preference = Column(Boolean, default=True)
 
 
@@ -80,9 +79,8 @@ class Application(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     cycle_id = Column(Integer, ForeignKey("cycles.id"), nullable=False)
     year = Column(Integer, nullable=True)
-    category = Column(String, nullable=True)
     hostel_id = Column(Integer, ForeignKey("hostels.id"), nullable=True)
-    status = Column(String, default="draft")
+    status = Column(String, default="submitted")
     created_at = Column(DateTime, default=datetime.now)
     user = relationship("User")
     hostel = relationship("Hostel")

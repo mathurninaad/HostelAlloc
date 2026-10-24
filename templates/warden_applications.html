@@ -4,12 +4,11 @@
 {% if cycle %}<p>Cycle: {{ cycle.name }}</p>{% endif %}
 {% if items %}
 <table>
-    <tr><th>Student</th><th>Year</th><th>Category</th><th>Preferred hostel</th><th>Status</th></tr>
+    <tr><th>Student</th><th>Year</th><th>Preferred hostel</th><th>Status</th></tr>
     {% for a in items %}
     <tr>
         <td>{{ a.user.name }}</td>
         <td>{{ a.year }}</td>
-        <td>{{ a.category }}</td>
         <td>{% if a.hostel %}{{ a.hostel.name }}{% else %}-{% endif %}</td>
         <td>{{ a.status }}</td>
     </tr>

@@ -24,12 +24,11 @@
 {% if allocations %}
 <h3>Allocations</h3>
 <table>
-    <tr><th>Student</th><th>Year</th><th>Category</th><th>Room</th><th>Bed</th><th>Status</th></tr>
+    <tr><th>Student</th><th>Year</th><th>Room</th><th>Bed</th><th>Status</th></tr>
     {% for a in allocations %}
     <tr>
         <td>{{ a.user.name }}</td>
         <td>{{ a.application.year }}</td>
-        <td>{{ a.application.category }}</td>
         <td>{{ a.bed.room.hostel.name }}, {{ a.bed.room.number }}</td>
         <td>{{ a.bed.number }}</td>
         <td>{{ a.status }}</td>
@@ -41,9 +40,9 @@
 {% if unallocated %}
 <h3>Not allocated (no bed left)</h3>
 <table>
-    <tr><th>Student</th><th>Year</th><th>Category</th></tr>
+    <tr><th>Student</th><th>Year</th></tr>
     {% for a in unallocated %}
-    <tr><td>{{ a.user.name }}</td><td>{{ a.year }}</td><td>{{ a.category }}</td></tr>
+    <tr><td>{{ a.user.name }}</td><td>{{ a.year }}</td></tr>
     {% endfor %}
 </table>
 {% endif %}

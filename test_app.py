@@ -70,25 +70,25 @@ def test_full_flow():
     office = login("office@t.com")
     warden = login("warden@t.com")
 
-    r = s1.post("/student/apply", data={"action": "submit", "year": "", "category": "General"})
-    assert "Please fill year of study and category" in r.text
+    r = s1.post("/student/apply", data={"year": ""})
+    assert "Please select your year of study" in r.text
 
-    s1.post("/student/apply", data={"action": "submit", "year": "3", "category": "General"})
-    s2.post("/student/apply", data={"action": "submit", "year": "2", "category": "General"})
-    r = s3.post("/student/apply", data={"action": "submit", "year": "1", "category": "General"})
+    s1.post("/student/apply", data={"year": "3"})
+    s2.post("/student/apply", data={"year": "2"})
+    r = s3.post("/student/apply", data={"year": "1"})
     assert "Application submitted" in r.text
 
     r = office.post("/office/allocation/run")
     assert "only after the application window closes" in r.text
 
     office.post("/office/cycle/close")
-    r = s1.post("/student/apply", data={"action": "submit", "year": "3", "category": "General"})
+    r = s1.post("/student/apply", data={"year": "3"})
     assert "not open" in r.text
 
     r = office.post("/office/allocation/run")
     assert "Set the allocation criteria first" in r.text
 
-    office.post("/office/criteria", data={"year_order": "senior", "priority_category": "", "use_preference": "yes"})
+    office.post("/office/criteria", data={"year_order": "senior", "use_preference": "yes"})
     r = office.post("/office/allocation/run")
     assert "2 students allocated, 1 could not be allocated" in r.text
 

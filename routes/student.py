@@ -10,8 +10,6 @@ from helpers import (
 router = APIRouter(prefix="/student")
 student_only = login_required("student")
 
-CATEGORIES = ["General", "OBC", "SC", "ST", "PwD"]
-
 
 def get_application(db, user_id, cycle):
     if cycle is None:
@@ -57,7 +55,7 @@ def apply_page(request: Request, user=Depends(student_only), db: Session = Depen
     hostels = db.query(Hostel).all()
     return render(
         request, "apply.html", user=user, cycle=cycle, application=application,
-        hostels=hostels, categories=CATEGORIES, is_open=window_open(cycle),
+        hostels=hostels, is_open=window_open(cycle),
         status=shown_status(application, cycle),
     )
 
@@ -65,9 +63,7 @@ def apply_page(request: Request, user=Depends(student_only), db: Session = Depen
 @router.post("/apply")
 def apply(
     request: Request,
-    action: str = Form(...),
     year: str = Form(""),
-    category: str = Form(""),
     hostel_id: str = Form(""),
     user=Depends(student_only),
     db: Session = Depends(get_db),
@@ -80,34 +76,23 @@ def apply(
         flash(request, "You already have a room allocated")
         return go("/student/apply")
     application = get_application(db, user.id, cycle)
-    if application and application.status not in ("draft", "submitted"):
+    if application and application.status != "submitted":
         flash(request, "Your application is already processed")
         return go("/student/apply")
-    if action == "submit" and (not year or not category):
-        flash(request, "Please fill year of study and category")
-        return go("/student/apply")
-    if action == "draft" and application and application.status == "submitted":
-        flash(request, "Your application is already submitted")
+    if not year:
+        flash(request, "Please select your year of study")
         return go("/student/apply")
 
     if application is None:
         application = Application(user_id=user.id, cycle_id=cycle.id)
         db.add(application)
-    already_submitted = application.status == "submitted"
-    application.year = int(year) if year else None
-    application.category = category or None
-    application.hostel_id = int(hostel_id) if hostel_id else None
-
-    if action == "submit":
-        application.status = "submitted"
-        if not already_submitted:
-            notify(db, user.id, "Your hostel application has been submitted")
-            flash(request, "Application submitted")
-        else:
-            flash(request, "Application updated")
+        notify(db, user.id, "Your hostel application has been submitted")
+        flash(request, "Application submitted")
     else:
-        application.status = "draft"
-        flash(request, "Draft saved")
+        flash(request, "Application updated")
+    application.year = int(year)
+    application.hostel_id = int(hostel_id) if hostel_id else None
+    application.status = "submitted"
     db.commit()
     return go("/student/apply")
 
@@ -116,7 +101,7 @@ def apply(
 def withdraw(request: Request, user=Depends(student_only), db: Session = Depends(get_db)):
     cycle = current_cycle(db)
     application = get_application(db, user.id, cycle)
-    if application is None or application.status not in ("draft", "submitted") or cycle.allocation_run:
+    if application is None or application.status != "submitted" or cycle.allocation_run:
         flash(request, "You cannot withdraw now")
         return go("/student")
     application.status = "withdrawn"
