@@ -48,9 +48,15 @@ def home(request: Request, user=Depends(warden_only), db: Session = Depends(get_
     checkouts = len([c for c in db.query(Checkout).filter_by(status="Initiated").all()
                      if c.allocation.bed.room.hostel_id in ids])
     unread = db.query(Notification).filter_by(user_id=user.id, read=False).count()
+    cycle = current_cycle(db)
+    applications = 0
+    if cycle:
+        applications = db.query(Application).filter(
+            Application.cycle_id == cycle.id, Application.status != "withdrawn"
+        ).count()
     return render(
         request, "warden_home.html", user=user, hostels=hostels, to_verify=to_verify,
-        changes=changes, checkouts=checkouts, unread=unread,
+        changes=changes, checkouts=checkouts, unread=unread, applications=applications,
     )
 
 

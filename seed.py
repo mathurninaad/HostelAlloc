@@ -14,8 +14,8 @@ users = [
     ("System Admin", "admin@lnmiit.ac.in", "sysadmin"),
     ("Hostel Office", "office@lnmiit.ac.in", "office"),
     ("Institute Admin", "institute@lnmiit.ac.in", "institute"),
-    ("Warden Sharma", "warden1@lnmiit.ac.in", "warden"),
-    ("Warden Verma", "warden2@lnmiit.ac.in", "warden"),
+    ("Warden 1", "warden1@lnmiit.ac.in", "warden"),
+    ("Warden 2", "warden2@lnmiit.ac.in", "warden"),
 ]
 for i in range(1, 21):
     users.append(("Student " + str(i), "student" + str(i) + "@lnmiit.ac.in", "student"))
@@ -27,7 +27,7 @@ db.commit()
 warden1 = db.query(User).filter_by(email="warden1@lnmiit.ac.in").first()
 warden2 = db.query(User).filter_by(email="warden2@lnmiit.ac.in").first()
 
-for hostel_name, warden in [("BH-1", warden1), ("BH-2", warden1), ("BH-3", warden2), ("BH-4", warden2)]:
+for hostel_name, warden in [("BH1", warden1), ("BH2", warden1), ("BH3", warden2), ("BH4", warden2)]:
     hostel = Hostel(name=hostel_name, floors=1, warden_id=warden.id)
     db.add(hostel)
     db.flush()
