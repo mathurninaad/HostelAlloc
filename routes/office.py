@@ -207,6 +207,9 @@ def new_cycle(
     if end_date < start_date or not name.strip():
         flash(request, "Check the name and dates")
         return go("/office/cycle")
+    if start_date < date.today() or end_date < date.today():
+        flash(request, "Dates cannot be before today")
+        return go("/office/cycle")
     db.add(Cycle(name=name.strip(), start_date=start_date, end_date=end_date))
     log(db, user.id, "Created cycle " + name.strip())
     db.commit()
@@ -228,6 +231,11 @@ def change_dates(
         return go("/office/cycle")
     if end_date < start_date:
         flash(request, "End date is before start date")
+        return go("/office/cycle")
+    start_changed = start_date != cycle.start_date and start_date < date.today()
+    end_changed = end_date != cycle.end_date and end_date < date.today()
+    if start_changed or end_changed:
+        flash(request, "Dates cannot be changed to a day before today")
         return go("/office/cycle")
     cycle.start_date = start_date
     cycle.end_date = end_date

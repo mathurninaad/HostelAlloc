@@ -81,6 +81,14 @@ def test_full_flow():
     r = office.post("/office/allocation/run")
     assert "only after the application window closes" in r.text
 
+    yesterday = str(date.today() - timedelta(days=1))
+    r = office.post("/office/cycle/dates", data={"start_date": yesterday, "end_date": yesterday})
+    assert "before today" in r.text
+    r = office.post("/office/cycle/dates", data={"start_date": yesterday, "end_date": str(date.today())})
+    assert "before today" in r.text
+    r = office.post("/office/cycle/dates", data={"start_date": str(date.today()), "end_date": str(date.today())})
+    assert "Dates updated" in r.text
+
     office.post("/office/cycle/close")
     r = s1.post("/student/apply", data={"year": "3"})
     assert "not open" in r.text
