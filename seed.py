@@ -11,21 +11,21 @@ if db.query(User).count() > 0:
     raise SystemExit
 
 users = [
-    ("System Admin", "admin@lnmiit.ac.in", "sysadmin"),
-    ("Hostel Office", "office@lnmiit.ac.in", "office"),
-    ("Institute Admin", "institute@lnmiit.ac.in", "institute"),
-    ("Warden Sharma", "warden1@lnmiit.ac.in", "warden"),
-    ("Warden Verma", "warden2@lnmiit.ac.in", "warden"),
+    ("System Admin", "admin@hostel.com", "sysadmin"),
+    ("Hostel Office", "office@hostel.com", "office"),
+    ("Institute Admin", "institute@hostel.com", "institute"),
+    ("Warden Sharma", "warden1@hostel.com", "warden"),
+    ("Warden Verma", "warden2@hostel.com", "warden"),
 ]
 for i in range(1, 11):
-    users.append(("Student " + str(i), "student" + str(i) + "@lnmiit.ac.in", "student"))
+    users.append(("Student " + str(i), "student" + str(i) + "@hostel.com", "student"))
 
 for name, email, role in users:
     db.add(User(name=name, email=email, password=hash_password("password123"), role=role))
 db.commit()
 
-warden1 = db.query(User).filter_by(email="warden1@lnmiit.ac.in").first()
-warden2 = db.query(User).filter_by(email="warden2@lnmiit.ac.in").first()
+warden1 = db.query(User).filter_by(email="warden1@hostel.com").first()
+warden2 = db.query(User).filter_by(email="warden2@hostel.com").first()
 
 for hostel_name, warden in [("Aravali Hostel", warden1), ("Vindhya Hostel", warden2)]:
     hostel = Hostel(name=hostel_name, floors=2, warden_id=warden.id)

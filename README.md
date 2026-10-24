@@ -24,11 +24,11 @@ Then open http://127.0.0.1:8000
 
 | Role | Email |
 | --- | --- |
-| Student | student1@lnmiit.ac.in ... student10@lnmiit.ac.in |
-| Warden | warden1@lnmiit.ac.in, warden2@lnmiit.ac.in |
-| Hostel office | office@lnmiit.ac.in |
-| Institute admin | institute@lnmiit.ac.in |
-| System admin | admin@lnmiit.ac.in |
+| Student | student1@hostel.com ... student10@hostel.com |
+| Warden | warden1@hostel.com, warden2@hostel.com |
+| Hostel office | office@hostel.com |
+| Institute admin | institute@hostel.com |
+| System admin | admin@hostel.com |
 
 New students can also register from the login page.
 
