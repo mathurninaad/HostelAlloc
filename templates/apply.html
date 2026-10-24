@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Hostel Application</h2>
+{% if not cycle %}
+    <p>No application cycle has been started yet.</p>
+{% else %}
+    <p>Cycle: {{ cycle.name }} ({{ cycle.start_date.strftime("%d-%m-%Y") }} to {{ cycle.end_date.strftime("%d-%m-%Y") }})</p>
+    {% if application %}
+        <p>Status: <b>{{ status }}</b></p>
+    {% endif %}
+
+    {% if not is_open %}
+        <p>The application window is closed.</p>
+    {% elif application and application.status not in ["draft", "submitted"] %}
+        <p>Your application is already processed.</p>
+    {% else %}
+        <form method="post" action="/student/apply">
+            <label>Year of study</label>
+            <select name="year">
+                <option value="">-- select --</option>
+                {% for y in [1, 2, 3, 4] %}
+                <option value="{{ y }}" {% if application and application.year == y %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+            <label>Category</label>
+            <select name="category">
+                <option value="">-- select --</option>
+                {% for c in categories %}
+                <option value="{{ c }}" {% if application and application.category == c %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
+            <label>Preferred hostel</label>
+            <select name="hostel_id">
+                <option value="">No preference</option>
+                {% for h in hostels %}
+                <option value="{{ h.id }}" {% if application and application.hostel_id == h.id %}selected{% endif %}>{{ h.name }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit" name="action" value="submit">
+                {% if application and application.status == "submitted" %}Update application{% else %}Submit application{% endif %}
+            </button>
+            {% if not application or application.status == "draft" %}
+            <button type="submit" name="action" value="draft">Save draft</button>
+            {% endif %}
+        </form>
+    {% endif %}
+{% endif %}
+{% endblock %}

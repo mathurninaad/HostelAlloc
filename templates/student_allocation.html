@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Room</h2>
+{% if allocation %}
+<table>
+    <tr><th>Hostel</th><td>{{ allocation.bed.room.hostel.name }}</td></tr>
+    <tr><th>Floor</th><td>{{ allocation.bed.room.floor }}</td></tr>
+    <tr><th>Room</th><td>{{ allocation.bed.room.number }}</td></tr>
+    <tr><th>Bed</th><td>{{ allocation.bed.number }}</td></tr>
+    <tr><th>Warden</th><td>{% if allocation.bed.room.hostel.warden %}{{ allocation.bed.room.hostel.warden.name }}{% else %}-{% endif %}</td></tr>
+</table>
+{% else %}
+<p>Your room has not been published yet.</p>
+{% endif %}
+{% endblock %}

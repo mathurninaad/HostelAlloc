@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome, {{ user.name }}</h2>
+<p><a href="/notifications">Notifications</a> ({{ unread }} new)</p>
+
+<div class="box">
+    <h3>Application</h3>
+    {% if not cycle %}
+        <p>No application cycle has been started yet.</p>
+    {% else %}
+        <p>Cycle: {{ cycle.name }} ({{ cycle.start_date.strftime("%d-%m-%Y") }} to {{ cycle.end_date.strftime("%d-%m-%Y") }})</p>
+        <p>Applications are {% if is_open %}open{% else %}closed{% endif %}.</p>
+        {% if application %}
+            <p>Your application status: <b>{{ status }}</b></p>
+            {% if application.status in ["draft", "submitted"] and not cycle.allocation_run %}
+            <form method="post" action="/student/withdraw" class="inline">
+                <button type="submit">Withdraw application</button>
+            </form>
+            {% endif %}
+        {% else %}
+            <p>You have not applied yet.</p>
+        {% endif %}
+        <p><a href="/student/apply">Open application form</a></p>
+    {% endif %}
+</div>
+
+<div class="box">
+    <h3>My Room</h3>
+    {% if allocation %}
+        <p>{{ place }}</p>
+        <p><a href="/student/allocation">See details</a></p>
+    {% elif application and cycle and cycle.published and application.status == "unallocated" %}
+        <p>Sorry, no room could be allocated to you in this cycle.</p>
+    {% else %}
+        <p>No room allocated yet.</p>
+    {% endif %}
+</div>
+
+<div class="box">
+    <h3>Room Change</h3>
+    {% if change %}
+        <p>Last request: {{ change.status }}</p>
+    {% else %}
+        <p>No requests made.</p>
+    {% endif %}
+    <p><a href="/student/room-change">Room change page</a></p>
+</div>
+
+<div class="box">
+    <h3>Checkout</h3>
+    {% if checkout %}
+        <p>Last checkout: {{ checkout.status }}</p>
+    {% else %}
+        <p>No checkout started.</p>
+    {% endif %}
+    <p><a href="/student/checkout">Checkout page</a></p>
+</div>
+{% endblock %}

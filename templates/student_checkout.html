@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkout</h2>
+{% if allocation and not started %}
+<p>You are in {{ allocation.bed.room.hostel.name }}, Room {{ allocation.bed.room.number }}.</p>
+<form method="post" action="/student/checkout">
+    <button type="submit">Start checkout</button>
+</form>
+{% elif started %}
+<p>Your checkout is started. The warden will confirm it.</p>
+{% else %}
+<p>You do not have a room to vacate.</p>
+{% endif %}
+
+{% if checkouts %}
+<h3>History</h3>
+<table>
+    <tr><th>Started</th><th>Status</th><th>Confirmed</th></tr>
+    {% for c in checkouts %}
+    <tr>
+        <td>{{ c.initiated_at.strftime("%d-%m-%Y") }}</td>
+        <td>{{ c.status }}</td>
+        <td>{% if c.confirmed_at %}{{ c.confirmed_at.strftime("%d-%m-%Y") }}{% else %}-{% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endblock %}

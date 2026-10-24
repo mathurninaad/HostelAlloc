@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Room Change</h2>
+{% if pending %}
+    <p>You already have a pending request.</p>
+{% else %}
+<form method="post" action="/student/room-change">
+    <label>Room you want</label>
+    <select name="room_id">
+        {% for r in rooms %}
+        <option value="{{ r.id }}">{{ r.hostel.name }}, Room {{ r.number }} ({{ r.free_count() }} free)</option>
+        {% endfor %}
+    </select>
+    <label>Reason</label>
+    <textarea name="reason" required></textarea>
+    <br>
+    <button type="submit">Send request</button>
+</form>
+{% endif %}
+
+<h3>My requests</h3>
+{% if requests %}
+<table>
+    <tr><th>Date</th><th>Room wanted</th><th>Reason</th><th>Status</th><th>Warden note</th></tr>
+    {% for r in requests %}
+    <tr>
+        <td>{{ r.created_at.strftime("%d-%m-%Y") }}</td>
+        <td>{{ r.requested_room.hostel.name }}, {{ r.requested_room.number }}</td>
+        <td>{{ r.reason }}</td>
+        <td>{{ r.status }}</td>
+        <td>{{ r.decision_note }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No requests yet.</p>
+{% endif %}
+{% endblock %}
