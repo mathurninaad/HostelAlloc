@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ hostel.name }}</h2>
+
+<form method="post" action="/office/hostels/{{ hostel.id }}/edit">
+    <label>Name</label>
+    <input type="text" name="name" value="{{ hostel.name }}" required>
+    <label>Floors</label>
+    <input type="number" name="floors" value="{{ hostel.floors }}" min="1">
+    <label>Warden</label>
+    <select name="warden_id">
+        <option value="">None</option>
+        {% for w in wardens %}
+        <option value="{{ w.id }}" {% if hostel.warden_id == w.id %}selected{% endif %}>{{ w.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="submit">Save hostel</button>
+</form>
+
+<h3>Rooms</h3>
+{% if hostel.rooms %}
+<table>
+    <tr><th>Room</th><th>Floor</th><th>Type</th><th>Capacity</th><th>Occupied</th><th>Change</th></tr>
+    {% for r in hostel.rooms %}
+    <tr>
+        <td>{{ r.number }}</td>
+        <td>{{ r.floor }}</td>
+        <td>{{ r.room_type }}</td>
+        <td>{{ r.beds|length }}</td>
+        <td>{{ r.beds|length - r.free_count() }}</td>
+        <td>
+            <form method="post" action="/office/rooms/{{ r.id }}/edit" class="inline">
+                <input type="number" name="capacity" value="{{ r.beds|length }}" min="1" max="10" style="width:50px">
+                <select name="room_type">
+                    {% for t in ["Standard", "Single", "AC"] %}
+                    <option value="{{ t }}" {% if r.room_type == t %}selected{% endif %}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Save</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No rooms yet.</p>
+{% endif %}
+
+<h3>Add room</h3>
+<form method="post" action="/office/hostels/{{ hostel.id }}/rooms">
+    <label>Room number</label>
+    <input type="text" name="number" required>
+    <label>Floor</label>
+    <input type="number" name="floor" value="0" min="0">
+    <label>Bed capacity</label>
+    <input type="number" name="capacity" value="2" min="1" max="10">
+    <label>Type</label>
+    <select name="room_type">
+        <option>Standard</option>
+        <option>Single</option>
+        <option>AC</option>
+    </select>
+    <br>
+    <button type="submit">Add room</button>
+</form>
+<p><a href="/office/hostels">Back to hostels</a></p>
+{% endblock %}

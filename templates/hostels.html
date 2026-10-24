@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Hostels</h2>
+{% if items %}
+<table>
+    <tr><th>Name</th><th>Floors</th><th>Warden</th><th>Rooms</th><th>Beds</th><th>Occupied</th><th></th></tr>
+    {% for h in items %}
+    <tr>
+        <td>{{ h.name }}</td>
+        <td>{{ h.floors }}</td>
+        <td>{% if h.warden %}{{ h.warden.name }}{% else %}-{% endif %}</td>
+        <td>{{ h.rooms|length }}</td>
+        <td>{{ h.total_beds() }}</td>
+        <td>{{ h.occupied_beds() }}</td>
+        <td><a href="/office/hostels/{{ h.id }}">Manage</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hostels yet.</p>
+{% endif %}
+
+<h3>Add hostel</h3>
+<form method="post" action="/office/hostels">
+    <label>Name</label>
+    <input type="text" name="name" required>
+    <label>Floors</label>
+    <input type="number" name="floors" value="1" min="1">
+    <label>Warden</label>
+    <select name="warden_id">
+        <option value="">None</option>
+        {% for w in wardens %}
+        <option value="{{ w.id }}">{{ w.name }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="submit">Add hostel</button>
+</form>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Hostel Office Dashboard</h2>
+
+<table>
+    <tr><th>Hostels</th><td>{{ hostels }}</td></tr>
+    <tr><th>Total beds</th><td>{{ total }}</td></tr>
+    <tr><th>Occupied beds</th><td>{{ occupied }}</td></tr>
+    <tr><th>Vacant beds</th><td>{{ total - occupied }}</td></tr>
+    <tr><th>Pending room change requests</th><td>{{ pending_changes }}</td></tr>
+</table>
+
+<h3>Current cycle</h3>
+{% if cycle %}
+<table>
+    <tr><th>Name</th><td>{{ cycle.name }}</td></tr>
+    <tr><th>Window</th><td>{{ cycle.start_date.strftime("%d-%m-%Y") }} to {{ cycle.end_date.strftime("%d-%m-%Y") }} ({% if is_open %}open{% else %}closed{% endif %})</td></tr>
+    <tr><th>Applications (not withdrawn)</th><td>{{ applications }}</td></tr>
+    <tr><th>Submitted applications</th><td>{{ submitted }}</td></tr>
+    <tr><th>Allocation run</th><td>{% if cycle.allocation_run %}Yes{% else %}No{% endif %}</td></tr>
+    <tr><th>Published</th><td>{% if cycle.published %}Yes{% else %}No{% endif %}</td></tr>
+</table>
+{% else %}
+<p>No cycle yet. <a href="/office/cycle">Create one</a>.</p>
+{% endif %}
+{% endblock %}

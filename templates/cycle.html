@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Allocation Cycle</h2>
+
+{% if cycle %}
+<div class="box">
+    <h3>{{ cycle.name }}</h3>
+    <p>Application window: {{ cycle.start_date.strftime("%d-%m-%Y") }} to {{ cycle.end_date.strftime("%d-%m-%Y") }}
+        ({% if is_open %}open{% else %}closed{% endif %})</p>
+    {% if not cycle.allocation_run %}
+    <form method="post" action="/office/cycle/dates">
+        <label>Start date</label>
+        <input type="date" name="start_date" value="{{ cycle.start_date }}" required>
+        <label>End date</label>
+        <input type="date" name="end_date" value="{{ cycle.end_date }}" required>
+        <br>
+        <button type="submit">Change dates</button>
+    </form>
+    <form method="post" action="/office/cycle/close">
+        <button type="submit">Close applications now</button>
+    </form>
+    {% else %}
+    <p>Allocation has been run, dates cannot be changed.</p>
+    {% endif %}
+</div>
+
+<div class="box">
+    <h3>Allocation criteria</h3>
+    {% if cycle.allocation_run %}
+        {% if criteria %}
+        <p>Year order: {{ criteria.year_order }} first</p>
+        <p>Priority category: {% if criteria.priority_category %}{{ criteria.priority_category }}{% else %}none{% endif %}</p>
+        <p>Use hostel preference: {% if criteria.use_preference %}yes{% else %}no{% endif %}</p>
+        {% endif %}
+    {% else %}
+    {% if not criteria %}<p>Criteria are not set yet.</p>{% endif %}
+    <form method="post" action="/office/criteria">
+        <label>Which year gets room first</label>
+        <select name="year_order">
+            <option value="senior" {% if criteria and criteria.year_order == "senior" %}selected{% endif %}>Senior students first</option>
+            <option value="junior" {% if criteria and criteria.year_order == "junior" %}selected{% endif %}>Junior students first</option>
+        </select>
+        <label>Priority category (gets rooms before others)</label>
+        <select name="priority_category">
+            <option value="">None</option>
+            {% for c in categories %}
+            <option value="{{ c }}" {% if criteria and criteria.priority_category == c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+        </select>
+        <label>Try the student's preferred hostel first</label>
+        <select name="use_preference">
+            <option value="yes" {% if not criteria or criteria.use_preference %}selected{% endif %}>Yes</option>
+            <option value="no" {% if criteria and not criteria.use_preference %}selected{% endif %}>No</option>
+        </select>
+        <br>
+        <button type="submit">Save criteria</button>
+    </form>
+    {% endif %}
+</div>
+{% endif %}
+
+{% if not cycle or cycle.published %}
+<h3>Start a new cycle</h3>
+<form method="post" action="/office/cycle/new">
+    <label>Name</label>
+    <input type="text" name="name" placeholder="2026-27" required>
+    <label>Start date</label>
+    <input type="date" name="start_date" value="{{ today }}" required>
+    <label>End date</label>
+    <input type="date" name="end_date" value="{{ today }}" required>
+    <br>
+    <button type="submit">Create cycle</button>
+</form>
+{% endif %}
+{% endblock %}

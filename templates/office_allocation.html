@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Allocation</h2>
+{% if not cycle %}
+<p>Create a cycle first.</p>
+{% else %}
+<p>Cycle: {{ cycle.name }}</p>
+<p>Application window is {% if is_open %}open{% else %}closed{% endif %}.
+   Criteria are {% if criteria %}set{% else %}not set{% endif %}.</p>
+
+{% if not cycle.allocation_run %}
+<form method="post" action="/office/allocation/run">
+    <button type="submit">Run allocation</button>
+</form>
+{% elif not cycle.published %}
+<p>{{ pending }} allocations are waiting for warden verification.</p>
+<form method="post" action="/office/allocation/publish">
+    <button type="submit">Publish results</button>
+</form>
+{% else %}
+<p>Results are published.</p>
+{% endif %}
+
+{% if allocations %}
+<h3>Allocations</h3>
+<table>
+    <tr><th>Student</th><th>Year</th><th>Category</th><th>Room</th><th>Bed</th><th>Status</th></tr>
+    {% for a in allocations %}
+    <tr>
+        <td>{{ a.user.name }}</td>
+        <td>{{ a.application.year }}</td>
+        <td>{{ a.application.category }}</td>
+        <td>{{ a.bed.room.hostel.name }}, {{ a.bed.room.number }}</td>
+        <td>{{ a.bed.number }}</td>
+        <td>{{ a.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endif %}
+
+{% if unallocated %}
+<h3>Not allocated (no bed left)</h3>
+<table>
+    <tr><th>Student</th><th>Year</th><th>Category</th></tr>
+    {% for a in unallocated %}
+    <tr><td>{{ a.user.name }}</td><td>{{ a.year }}</td><td>{{ a.category }}</td></tr>
+    {% endfor %}
+</table>
+{% endif %}
+{% endif %}
+{% endblock %}
