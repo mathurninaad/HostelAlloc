@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Audit Log</h2>
+<table>
+    <tr><th>Time</th><th>User</th><th>Action</th></tr>
+    {% for a in items %}
+    <tr>
+        <td>{{ a.created_at.strftime("%d-%m-%Y %H:%M") }}</td>
+        <td>{% if a.user %}{{ a.user.name }}{% else %}-{% endif %}</td>
+        <td>{{ a.action }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

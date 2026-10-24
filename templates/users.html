@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Users</h2>
+<table>
+    <tr><th>Name</th><th>Email</th><th>Role</th><th>Active</th><th>Change role</th><th></th></tr>
+    {% for u in items %}
+    <tr>
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+        <td>{% if u.active %}Yes{% else %}No{% endif %}</td>
+        <td>
+            <form method="post" action="/admin/users/{{ u.id }}/role" class="inline">
+                <select name="role">
+                    {% for r in roles %}
+                    <option value="{{ r }}" {% if u.role == r %}selected{% endif %}>{{ r }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit">Save</button>
+            </form>
+        </td>
+        <td>
+            <form method="post" action="/admin/users/{{ u.id }}/toggle" class="inline">
+                <button type="submit">{% if u.active %}Deactivate{% else %}Activate{% endif %}</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h3>Add user</h3>
+<form method="post" action="/admin/users">
+    <label>Name</label>
+    <input type="text" name="name" required>
+    <label>Email</label>
+    <input type="email" name="email" required>
+    <label>Password</label>
+    <input type="text" name="password" required>
+    <label>Role</label>
+    <select name="role">
+        {% for r in roles %}
+        <option value="{{ r }}">{{ r }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="submit">Add user</button>
+</form>
+{% endblock %}
