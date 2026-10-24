@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Checkouts</h2>
+
+<h3>Checkout requests</h3>
+{% if items %}
+<table>
+    <tr><th>Student</th><th>Room</th><th>Started</th><th>Status</th><th></th></tr>
+    {% for c in items %}
+    <tr>
+        <td>{{ c.user.name }}</td>
+        <td>{{ c.allocation.bed.room.hostel.name }}, {{ c.allocation.bed.room.number }}</td>
+        <td>{{ c.initiated_at.strftime("%d-%m-%Y") }}</td>
+        <td>{{ c.status }}</td>
+        <td>
+            {% if c.status == "Initiated" %}
+            <form method="post" action="/warden/checkouts/{{ c.id }}/confirm" class="inline">
+                <button type="submit">Confirm</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No checkouts yet.</p>
+{% endif %}
+
+<h3>Students in my hostels</h3>
+{% if students %}
+<table>
+    <tr><th>Student</th><th>Room</th><th></th></tr>
+    {% for a in students %}
+    <tr>
+        <td>{{ a.user.name }}</td>
+        <td>{{ a.bed.room.hostel.name }}, {{ a.bed.room.number }}, Bed {{ a.bed.number }}</td>
+        <td>
+            {% if a.id not in started %}
+            <form method="post" action="/warden/checkouts/start/{{ a.id }}" class="inline">
+                <button type="submit">Start checkout</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No students are staying right now.</p>
+{% endif %}
+{% endblock %}

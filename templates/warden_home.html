@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome, {{ user.name }}</h2>
+<p><a href="/notifications">Notifications</a> ({{ unread }} new)</p>
+
+<h3>My hostels</h3>
+{% if hostels %}
+<table>
+    <tr><th>Hostel</th><th>Beds</th><th>Occupied</th><th>Vacant</th></tr>
+    {% for h in hostels %}
+    <tr>
+        <td>{{ h.name }}</td>
+        <td>{{ h.total_beds() }}</td>
+        <td>{{ h.occupied_beds() }}</td>
+        <td>{{ h.total_beds() - h.occupied_beds() }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hostel is assigned to you yet.</p>
+{% endif %}
+
+<h3>Pending work</h3>
+<ul>
+    <li><a href="/warden/allocations">{{ to_verify }} allocations to verify</a></li>
+    <li><a href="/warden/changes">{{ changes }} room change requests</a></li>
+    <li><a href="/warden/checkouts">{{ checkouts }} checkouts to confirm</a></li>
+</ul>
+{% endblock %}

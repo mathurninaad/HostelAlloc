@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Applications</h2>
+{% if cycle %}<p>Cycle: {{ cycle.name }}</p>{% endif %}
+{% if items %}
+<table>
+    <tr><th>Student</th><th>Year</th><th>Category</th><th>Preferred hostel</th><th>Status</th></tr>
+    {% for a in items %}
+    <tr>
+        <td>{{ a.user.name }}</td>
+        <td>{{ a.year }}</td>
+        <td>{{ a.category }}</td>
+        <td>{% if a.hostel %}{{ a.hostel.name }}{% else %}-{% endif %}</td>
+        <td>{{ a.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No applications yet.</p>
+{% endif %}
+{% endblock %}

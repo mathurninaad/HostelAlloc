@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Allocations in my hostels</h2>
+{% if items %}
+<form method="post" action="/warden/verify-all">
+    <button type="submit">Verify all pending</button>
+</form>
+<table>
+    <tr><th>Student</th><th>Room</th><th>Bed</th><th>Status</th><th></th></tr>
+    {% for a in items %}
+    <tr>
+        <td>{{ a.user.name }}</td>
+        <td>{{ a.bed.room.hostel.name }}, {{ a.bed.room.number }}</td>
+        <td>{{ a.bed.number }}</td>
+        <td>{{ a.status }}</td>
+        <td>
+            {% if a.status == "Pending Verification" %}
+            <form method="post" action="/warden/verify/{{ a.id }}" class="inline">
+                <button type="submit">Verify</button>
+            </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No allocations yet.</p>
+{% endif %}
+{% endblock %}
