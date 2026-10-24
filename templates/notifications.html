@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Notifications</h2>
+{% if items %}
+<table>
+    <tr><th>Message</th><th>Time</th></tr>
+    {% for n in items %}
+    <tr>
+        <td {% if n.id in new_ids %}class="new"{% endif %}>{{ n.message }}</td>
+        <td>{{ n.created_at.strftime("%d-%m-%Y %H:%M") }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No notifications yet.</p>
+{% endif %}
+{% endblock %}
