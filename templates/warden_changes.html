@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import badge %}
 {% block content %}
 <h2>Room Change Requests</h2>
 {% if items %}
@@ -8,7 +9,7 @@
     <p>Current: {{ c.allocation.bed.room.hostel.name }}, Room {{ c.allocation.bed.room.number }}</p>
     <p>Wants: {{ c.requested_room.hostel.name }}, Room {{ c.requested_room.number }}</p>
     <p>Reason: {{ c.reason }}</p>
-    <p>Status: {{ c.status }}</p>
+    <p>Status: {{ badge(c.status) }}</p>
     {% if c.status == "Pending" %}
     <form method="post" action="/warden/changes/{{ c.id }}/approve">
         <label>Give room</label>
@@ -23,7 +24,7 @@
     </form>
     <form method="post" action="/warden/changes/{{ c.id }}/reject">
         <input type="text" name="note" placeholder="Reason for rejecting">
-        <button type="submit">Reject</button>
+        <button type="submit" class="danger">Reject</button>
     </form>
     {% elif c.decision_note %}
     <p>Note: {{ c.decision_note }}</p>

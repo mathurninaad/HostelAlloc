@@ -1,118 +1,170 @@
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     font-size: 15px;
-    color: #222;
+    line-height: 1.5;
+    color: #263238;
     margin: 0;
-    background: #eef1f5;
+    background: #f0f3f8;
 }
 
 .nav {
     background: #1f4e79;
-    padding: 12px 25px;
+    padding: 0 25px;
     overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .nav a {
-    color: white;
-    margin-right: 18px;
+    display: inline-block;
+    color: #dbe7f3;
+    padding: 14px 12px;
     text-decoration: none;
-    font-size: 15px;
+    font-size: 14px;
+    border-bottom: 3px solid transparent;
 }
 
 .nav a:hover {
-    text-decoration: underline;
+    color: white;
+    background: #2a5f91;
+}
+
+.nav a.active {
+    color: white;
+    border-bottom: 3px solid #ffffff;
+}
+
+.nav a.brand {
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    padding-left: 0;
+    margin-right: 15px;
+}
+
+.nav a.brand:hover {
+    background: none;
 }
 
 .nav .right {
     float: right;
-    margin-left: 18px;
-    margin-right: 0;
 }
 
 .container {
-    box-sizing: border-box;
-    max-width: 950px;
+    max-width: 980px;
     width: calc(100% - 40px);
-    margin: 25px auto;
+    margin: 28px auto 10px auto;
     background: white;
-    padding: 25px 30px;
-    border: 1px solid #d0d7de;
-    border-radius: 5px;
+    padding: 28px 32px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container.narrow {
+    max-width: 420px;
 }
 
 h2 {
-    margin-top: 0;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #1f4e79;
+    margin: 0 0 18px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #dde3ea;
     color: #1f4e79;
+    font-size: 24px;
 }
 
 h3 {
-    margin-top: 25px;
-    color: #333;
+    margin: 28px 0 10px 0;
+    color: #37474f;
+    font-size: 18px;
 }
 
 a {
-    color: #1f4e79;
+    color: #1f6fb5;
 }
 
 table {
     border-collapse: collapse;
     width: 100%;
-    margin: 10px 0 15px 0;
+    margin: 10px 0 18px 0;
+    font-size: 14px;
 }
 
 th, td {
-    border: 1px solid #d0d7de;
-    padding: 8px 10px;
+    border-bottom: 1px solid #e3e8ee;
+    padding: 10px 12px;
     text-align: left;
 }
 
 th {
-    background: #e3ebf3;
+    background: #f3f6fa;
+    color: #455a64;
+    font-weight: 600;
+    border-bottom: 2px solid #d5dce4;
 }
 
-tr:nth-child(even) td {
-    background: #f7f9fb;
+tr:hover td {
+    background: #f8fafc;
 }
 
 input, select, textarea {
-    padding: 6px 8px;
-    margin: 3px 0;
-    border: 1px solid #b5bdc6;
-    border-radius: 3px;
+    padding: 8px 10px;
+    margin: 4px 0;
+    border: 1px solid #c3ccd6;
+    border-radius: 5px;
     font-size: 14px;
+    font-family: inherit;
+    background: white;
 }
 
 input:focus, select:focus, textarea:focus {
     outline: none;
-    border-color: #1f4e79;
+    border-color: #1f6fb5;
+    box-shadow: 0 0 0 3px rgba(31, 111, 181, 0.15);
+}
+
+.narrow input[type=text], .narrow input[type=email], .narrow input[type=password] {
+    width: 100%;
 }
 
 textarea {
-    width: 320px;
-    height: 70px;
+    width: 340px;
+    max-width: 100%;
+    height: 80px;
 }
 
 label {
     display: block;
-    margin-top: 10px;
-    font-weight: bold;
+    margin-top: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #455a64;
 }
 
 button {
-    padding: 7px 16px;
-    margin-top: 10px;
+    padding: 8px 18px;
+    margin-top: 12px;
     background: #1f4e79;
     color: white;
     border: none;
-    border-radius: 3px;
+    border-radius: 5px;
     font-size: 14px;
+    font-family: inherit;
     cursor: pointer;
 }
 
 button:hover {
     background: #163a5a;
+}
+
+button.danger {
+    background: #c0392b;
+}
+
+button.danger:hover {
+    background: #962d22;
 }
 
 td button {
@@ -121,24 +173,94 @@ td button {
 }
 
 .message {
-    background: #fff8d6;
-    border: 1px solid #e0cf7a;
-    border-radius: 3px;
-    padding: 10px 12px;
-    margin-bottom: 15px;
+    background: #e8f3ff;
+    border: 1px solid #b6d4f0;
+    border-left: 4px solid #1f6fb5;
+    border-radius: 5px;
+    padding: 10px 14px;
+    margin-bottom: 18px;
 }
 
 .box {
-    border: 1px solid #d0d7de;
-    border-left: 4px solid #1f4e79;
-    border-radius: 3px;
-    background: #fafbfc;
-    padding: 5px 18px 12px 18px;
-    margin: 15px 0;
+    border: 1px solid #e0e6ed;
+    border-left: 4px solid #1f6fb5;
+    border-radius: 6px;
+    background: #fafbfd;
+    padding: 4px 20px 14px 20px;
+    margin: 16px 0;
 }
 
 .box h3 {
-    margin-top: 10px;
+    margin-top: 14px;
+}
+
+.stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.stat {
+    flex: 1;
+    min-width: 130px;
+    background: #f3f6fa;
+    border: 1px solid #e0e6ed;
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: #546e7a;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.stat span {
+    display: block;
+    font-size: 28px;
+    font-weight: bold;
+    color: #1f4e79;
+}
+
+a.stat:hover {
+    background: #e8eff7;
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    background: #eceff1;
+    color: #455a64;
+}
+
+.badge.submitted, .badge.pending, .badge.pending-verification, .badge.initiated {
+    background: #fff3cd;
+    color: #8a6d00;
+}
+
+.badge.allocated, .badge.verified, .badge.published, .badge.approved, .badge.confirmed {
+    background: #d9f2e0;
+    color: #1d6b34;
+}
+
+.badge.unallocated, .badge.rejected, .badge.withdrawn {
+    background: #fbdcd9;
+    color: #a1281d;
+}
+
+.bar {
+    background: #e3e8ee;
+    border-radius: 4px;
+    height: 8px;
+    width: 100px;
+    margin-bottom: 3px;
+}
+
+.bar div {
+    background: #1f6fb5;
+    height: 8px;
+    border-radius: 4px;
 }
 
 .new {
@@ -147,4 +269,11 @@ td button {
 
 form.inline {
     display: inline;
+}
+
+.footer {
+    text-align: center;
+    color: #90a4ae;
+    font-size: 12px;
+    margin: 12px 0 25px 0;
 }

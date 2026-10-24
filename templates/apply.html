@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import badge %}
 {% block content %}
 <h2>Hostel Application</h2>
 {% if not cycle %}
@@ -6,7 +7,7 @@
 {% else %}
     <p>Cycle: {{ cycle.name }} ({{ cycle.start_date.strftime("%d-%m-%Y") }} to {{ cycle.end_date.strftime("%d-%m-%Y") }})</p>
     {% if application %}
-        <p>Status: <b>{{ status }}</b></p>
+        <p>Status: {{ badge(status) }}</p>
     {% endif %}
 
     {% if not is_open %}

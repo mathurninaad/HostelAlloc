@@ -1,50 +1,55 @@
+{% macro nav(href, text) %}<a href="{{ href }}" class="{% if request.url.path == href or request.url.path.startswith(href ~ '/') %}active{% endif %}">{{ text }}</a>{% endmacro %}
 <!DOCTYPE html>
 <html>
 <head>
     <title>HostelAlloc</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 <div class="nav">
-    <a href="/"><b>HostelAlloc</b></a>
+    <a href="/" class="brand">HostelAlloc</a>
     {% if user %}
         {% if user.role == "student" %}
-            <a href="/student">Home</a>
-            <a href="/student/apply">Application</a>
-            <a href="/student/allocation">My Room</a>
-            <a href="/student/room-change">Room Change</a>
-            <a href="/student/checkout">Checkout</a>
+            {{ nav("/student", "Home") }}
+            {{ nav("/student/apply", "Application") }}
+            {{ nav("/student/allocation", "My Room") }}
+            {{ nav("/student/room-change", "Room Change") }}
+            {{ nav("/student/checkout", "Checkout") }}
         {% elif user.role == "warden" %}
-            <a href="/warden">Home</a>
-            <a href="/warden/applications">Applications</a>
-            <a href="/warden/allocations">Allocations</a>
-            <a href="/warden/changes">Room Changes</a>
-            <a href="/warden/checkouts">Checkouts</a>
-            <a href="/reports">Reports</a>
+            {{ nav("/warden", "Home") }}
+            {{ nav("/warden/applications", "Applications") }}
+            {{ nav("/warden/allocations", "Allocations") }}
+            {{ nav("/warden/changes", "Room Changes") }}
+            {{ nav("/warden/checkouts", "Checkouts") }}
+            {{ nav("/reports", "Reports") }}
         {% elif user.role == "office" %}
-            <a href="/office">Home</a>
-            <a href="/office/hostels">Hostels</a>
-            <a href="/office/cycle">Cycle</a>
-            <a href="/office/allocation">Allocation</a>
-            <a href="/reports">Reports</a>
+            {{ nav("/office", "Home") }}
+            {{ nav("/office/hostels", "Hostels") }}
+            {{ nav("/office/cycle", "Cycle") }}
+            {{ nav("/office/allocation", "Allocation") }}
+            {{ nav("/reports", "Reports") }}
         {% elif user.role == "institute" %}
-            <a href="/reports">Reports</a>
+            {{ nav("/reports", "Reports") }}
         {% elif user.role == "sysadmin" %}
-            <a href="/admin/users">Users</a>
-            <a href="/admin/audit">Audit Log</a>
-            <a href="/reports">Reports</a>
+            {{ nav("/admin/users", "Users") }}
+            {{ nav("/admin/audit", "Audit Log") }}
+            {{ nav("/reports", "Reports") }}
         {% endif %}
-        <a href="/logout" class="right">Logout</a>
-        <a href="/notifications" class="right">Notifications</a>
+        <span class="right">
+            {{ nav("/notifications", "Notifications") }}
+            <a href="/logout">Logout ({{ user.name }})</a>
+        </span>
     {% else %}
-        <a href="/login" class="right">Login</a>
+        <span class="right"><a href="/login">Login</a></span>
     {% endif %}
 </div>
-<div class="container">
+<div class="container {% block width %}{% endblock %}">
     {% if flash %}
         <div class="message">{{ flash }}</div>
     {% endif %}
     {% block content %}{% endblock %}
 </div>
+<p class="footer">HostelAlloc - CS314 Software Development Lab, LNMIIT</p>
 </body>
 </html>

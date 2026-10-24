@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import badge %}
 {% block content %}
 <h2>Applications</h2>
 {% if cycle %}<p>Cycle: {{ cycle.name }}</p>{% endif %}
@@ -10,7 +11,7 @@
         <td>{{ a.user.name }}</td>
         <td>{{ a.year }}</td>
         <td>{% if a.hostel %}{{ a.hostel.name }}{% else %}-{% endif %}</td>
-        <td>{{ a.status }}</td>
+        <td>{{ badge(a.status) }}</td>
     </tr>
     {% endfor %}
 </table>

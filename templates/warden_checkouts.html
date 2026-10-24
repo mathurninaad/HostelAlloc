@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import badge %}
 {% block content %}
 <h2>Checkouts</h2>
 
@@ -11,7 +12,7 @@
         <td>{{ c.user.name }}</td>
         <td>{{ c.allocation.bed.room.hostel.name }}, {{ c.allocation.bed.room.number }}</td>
         <td>{{ c.initiated_at.strftime("%d-%m-%Y") }}</td>
-        <td>{{ c.status }}</td>
+        <td>{{ badge(c.status) }}</td>
         <td>
             {% if c.status == "Initiated" %}
             <form method="post" action="/warden/checkouts/{{ c.id }}/confirm" class="inline">

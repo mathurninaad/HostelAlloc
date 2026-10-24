@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import badge %}
 {% block content %}
 <h2>Welcome, {{ user.name }}</h2>
 <p><a href="/notifications">Notifications</a> ({{ unread }} new)</p>
@@ -11,10 +12,10 @@
         <p>Cycle: {{ cycle.name }} ({{ cycle.start_date.strftime("%d-%m-%Y") }} to {{ cycle.end_date.strftime("%d-%m-%Y") }})</p>
         <p>Applications are {% if is_open %}open{% else %}closed{% endif %}.</p>
         {% if application %}
-            <p>Your application status: <b>{{ status }}</b></p>
+            <p>Your application status: {{ badge(status) }}</p>
             {% if application.status == "submitted" and not cycle.allocation_run %}
             <form method="post" action="/student/withdraw" class="inline">
-                <button type="submit">Withdraw application</button>
+                <button type="submit" class="danger">Withdraw application</button>
             </form>
             {% endif %}
         {% else %}
@@ -39,7 +40,7 @@
 <div class="box">
     <h3>Room Change</h3>
     {% if change %}
-        <p>Last request: {{ change.status }}</p>
+        <p>Last request: {{ badge(change.status) }}</p>
     {% else %}
         <p>No requests made.</p>
     {% endif %}
@@ -49,7 +50,7 @@
 <div class="box">
     <h3>Checkout</h3>
     {% if checkout %}
-        <p>Last checkout: {{ checkout.status }}</p>
+        <p>Last checkout: {{ badge(checkout.status) }}</p>
     {% else %}
         <p>No checkout started.</p>
     {% endif %}

@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "macros.html" import badge %}
 {% block content %}
 <h2>Reports</h2>
 
@@ -9,7 +10,7 @@
     {% for o in occupancy %}
     <tr>
         <td>{{ o.name }}</td><td>{{ o.rooms }}</td><td>{{ o.total }}</td>
-        <td>{{ o.used }}</td><td>{{ o.vacant }}</td><td>{{ o.percent }}%</td>
+        <td>{{ o.used }}</td><td>{{ o.vacant }}</td><td><div class="bar"><div style="width: {{ o.percent }}%"></div></div>{{ o.percent }}%</td>
     </tr>
     {% endfor %}
 </table>
@@ -22,7 +23,7 @@
 <table>
     <tr><th>Status</th><th>Count</th></tr>
     {% for status, count in by_status.items() %}
-    <tr><td>{{ status }}</td><td>{{ count }}</td></tr>
+    <tr><td>{{ badge(status) }}</td><td>{{ count }}</td></tr>
     {% endfor %}
 </table>
 <table>
@@ -38,7 +39,7 @@
 <h3>Room change requests</h3>
 {% if changes %}
 <p>
-    {% for status, count in change_counts.items() %}{{ status }}: {{ count }}&nbsp;&nbsp;{% endfor %}
+    {% for status, count in change_counts.items() %}{{ badge(status) }} {{ count }}&nbsp;&nbsp;&nbsp;{% endfor %}
 </p>
 <table>
     <tr><th>Student</th><th>From</th><th>To</th><th>Status</th></tr>
@@ -47,7 +48,7 @@
         <td>{{ c.user.name }}</td>
         <td>{{ c.allocation.bed.room.hostel.name }}, {{ c.allocation.bed.room.number }}</td>
         <td>{{ c.requested_room.hostel.name }}, {{ c.requested_room.number }}</td>
-        <td>{{ c.status }}</td>
+        <td>{{ badge(c.status) }}</td>
     </tr>
     {% endfor %}
 </table>

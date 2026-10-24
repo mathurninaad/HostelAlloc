@@ -2,13 +2,13 @@
 {% block content %}
 <h2>Hostel Office Dashboard</h2>
 
-<table>
-    <tr><th>Hostels</th><td>{{ hostels }}</td></tr>
-    <tr><th>Total beds</th><td>{{ total }}</td></tr>
-    <tr><th>Occupied beds</th><td>{{ occupied }}</td></tr>
-    <tr><th>Vacant beds</th><td>{{ total - occupied }}</td></tr>
-    <tr><th>Pending room change requests</th><td>{{ pending_changes }}</td></tr>
-</table>
+<div class="stats">
+    <div class="stat"><span>{{ hostels }}</span>Hostels</div>
+    <div class="stat"><span>{{ total }}</span>Total beds</div>
+    <div class="stat"><span>{{ occupied }}</span>Occupied</div>
+    <div class="stat"><span>{{ total - occupied }}</span>Vacant</div>
+    <div class="stat"><span>{{ pending_changes }}</span>Room change requests</div>
+</div>
 
 <h3>Current cycle</h3>
 {% if cycle %}

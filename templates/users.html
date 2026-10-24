@@ -21,7 +21,7 @@
         </td>
         <td>
             <form method="post" action="/admin/users/{{ u.id }}/toggle" class="inline">
-                <button type="submit">{% if u.active %}Deactivate{% else %}Activate{% endif %}</button>
+                <button type="submit" {% if u.active %}class="danger"{% endif %}>{% if u.active %}Deactivate{% else %}Activate{% endif %}</button>
             </form>
         </td>
     </tr>
