@@ -1,0 +1,88 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f4f4f4;
+}
+
+.nav {
+    background: #333;
+    padding: 10px 20px;
+}
+
+.nav a {
+    color: white;
+    margin-right: 15px;
+    text-decoration: none;
+}
+
+.nav .right {
+    float: right;
+    margin-left: 15px;
+    margin-right: 0;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 10px 0;
+}
+
+th, td {
+    border: 1px solid #999;
+    padding: 6px;
+    text-align: left;
+}
+
+th {
+    background: #eee;
+}
+
+input, select, textarea {
+    padding: 5px;
+    margin: 3px 0;
+}
+
+textarea {
+    width: 300px;
+    height: 60px;
+}
+
+label {
+    display: block;
+    margin-top: 8px;
+}
+
+button {
+    padding: 5px 12px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.message {
+    background: #ffffcc;
+    border: 1px solid #cccc66;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.new {
+    font-weight: bold;
+}
+
+form.inline {
+    display: inline;
+}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HostelAlloc</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="nav">
+    <a href="/"><b>HostelAlloc</b></a>
+    {% if user %}
+        {% if user.role == "student" %}
+            <a href="/student">Home</a>
+            <a href="/student/apply">Application</a>
+            <a href="/student/allocation">My Room</a>
+            <a href="/student/room-change">Room Change</a>
+            <a href="/student/checkout">Checkout</a>
+        {% elif user.role == "warden" %}
+            <a href="/warden">Home</a>
+            <a href="/warden/applications">Applications</a>
+            <a href="/warden/allocations">Allocations</a>
+            <a href="/warden/changes">Room Changes</a>
+            <a href="/warden/checkouts">Checkouts</a>
+            <a href="/reports">Reports</a>
+        {% elif user.role == "office" %}
+            <a href="/office">Home</a>
+            <a href="/office/hostels">Hostels</a>
+            <a href="/office/cycle">Cycle</a>
+            <a href="/office/allocation">Allocation</a>
+            <a href="/reports">Reports</a>
+        {% elif user.role == "institute" %}
+            <a href="/reports">Reports</a>
+        {% elif user.role == "sysadmin" %}
+            <a href="/admin/users">Users</a>
+            <a href="/admin/audit">Audit Log</a>
+            <a href="/reports">Reports</a>
+        {% endif %}
+        <a href="/logout" class="right">Logout</a>
+        <a href="/notifications" class="right">Notifications</a>
+    {% else %}
+        <a href="/login" class="right">Login</a>
+    {% endif %}
+</div>
+<div class="container">
+    {% if flash %}
+        <div class="message">{{ flash }}</div>
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>
