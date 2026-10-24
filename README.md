@@ -20,15 +20,15 @@ uvicorn main:app --reload
 
 Then open http://127.0.0.1:8000
 
-`seed.py` adds some sample users, two hostels and one application cycle. All sample users have the password `password123`.
+`seed.py` adds some sample users, four hostels (BH-1 to BH-4) and one application cycle. All sample users have the password `password123`.
 
 | Role | Email |
 | --- | --- |
-| Student | student1@hostel.com ... student10@hostel.com |
-| Warden | warden1@hostel.com, warden2@hostel.com |
-| Hostel office | office@hostel.com |
-| Institute admin | institute@hostel.com |
-| System admin | admin@hostel.com |
+| Student | student1@lnmiit.ac.in ... student20@lnmiit.ac.in |
+| Warden | warden1@lnmiit.ac.in, warden2@lnmiit.ac.in |
+| Hostel office | office@lnmiit.ac.in |
+| Institute admin | institute@lnmiit.ac.in |
+| System admin | admin@lnmiit.ac.in |
 
 New students can also register from the login page.
 
