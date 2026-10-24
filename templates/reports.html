@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Reports</h2>
+
+<h3>Occupancy</h3>
+{% if occupancy %}
+<table>
+    <tr><th>Hostel</th><th>Rooms</th><th>Beds</th><th>Occupied</th><th>Vacant</th><th>Occupancy %</th></tr>
+    {% for o in occupancy %}
+    <tr>
+        <td>{{ o.name }}</td><td>{{ o.rooms }}</td><td>{{ o.total }}</td>
+        <td>{{ o.used }}</td><td>{{ o.vacant }}</td><td>{{ o.percent }}%</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hostels to show.</p>
+{% endif %}
+
+<h3>Applications{% if cycle %} ({{ cycle.name }}){% endif %}</h3>
+{% if by_status %}
+<table>
+    <tr><th>Status</th><th>Count</th></tr>
+    {% for status, count in by_status.items() %}
+    <tr><td>{{ status }}</td><td>{{ count }}</td></tr>
+    {% endfor %}
+</table>
+<table>
+    <tr><th>Year of study</th><th>Applications</th></tr>
+    {% for year, count in by_year %}
+    <tr><td>{{ year }}</td><td>{{ count }}</td></tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No applications yet.</p>
+{% endif %}
+
+<h3>Room change requests</h3>
+{% if changes %}
+<p>
+    {% for status, count in change_counts.items() %}{{ status }}: {{ count }}&nbsp;&nbsp;{% endfor %}
+</p>
+<table>
+    <tr><th>Student</th><th>From</th><th>To</th><th>Status</th></tr>
+    {% for c in changes %}
+    <tr>
+        <td>{{ c.user.name }}</td>
+        <td>{{ c.allocation.bed.room.hostel.name }}, {{ c.allocation.bed.room.number }}</td>
+        <td>{{ c.requested_room.hostel.name }}, {{ c.requested_room.number }}</td>
+        <td>{{ c.status }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No room change requests.</p>
+{% endif %}
+{% endblock %}
