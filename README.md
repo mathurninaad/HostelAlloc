@@ -20,7 +20,7 @@ uvicorn main:app --reload
 
 Then open http://127.0.0.1:8000
 
-`seed.py` adds some sample users, four hostels (BH-1 to BH-4) and one application cycle. All sample users have the password `password123`.
+`seed.py` adds some sample users, four hostels (BH1 to BH4) and one application cycle. All sample users have the password `password123`.
 
 | Role | Email |
 | --- | --- |
