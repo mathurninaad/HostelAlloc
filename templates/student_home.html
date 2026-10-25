@@ -30,6 +30,8 @@
     {% if allocation %}
         <p>{{ place }}</p>
         <p><a href="/student/allocation">See details</a></p>
+    {% elif status == "checked out" %}
+        <p>You have checked out and your bed is vacant now.</p>
     {% elif application and cycle and cycle.published and application.status == "unallocated" %}
         <p>Sorry, no room could be allocated to you in this cycle.</p>
     {% else %}

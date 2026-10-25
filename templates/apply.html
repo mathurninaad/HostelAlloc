@@ -12,6 +12,8 @@
 
     {% if not is_open %}
         <p>The application window is closed.</p>
+    {% elif status == "checked out" %}
+        <p>You have checked out of the hostel.</p>
     {% elif application and application.status != "submitted" %}
         <p>Your application is already processed.</p>
     {% else %}

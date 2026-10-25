@@ -163,6 +163,13 @@ def test_full_flow():
 
     r = s2.get("/student/checkout")
     assert "do not have a room" in r.text
+    r = s2.get("/student")
+    assert "checked out" in r.text
+    assert "You have checked out and your bed is vacant now" in r.text
+    db = SessionLocal()
+    s2_user = db.query(User).filter_by(email="s2@t.com").first()
+    assert db.query(Allocation).filter_by(user_id=s2_user.id).first().status == "Cancelled"
+    db.close()
 
 
 def test_edit_room_capacity():

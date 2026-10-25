@@ -208,7 +208,7 @@ def confirm(checkout_id: int, request: Request, user=Depends(warden_only), db: S
         return go("/warden/checkouts")
     allocation = checkout.allocation
     allocation.bed.occupied = False
-    allocation.status = "Checked Out"
+    allocation.status = "Cancelled"
     checkout.status = "Confirmed"
     checkout.confirmed_at = datetime.now()
     notify(db, checkout.user_id, "Your hostel checkout is confirmed")

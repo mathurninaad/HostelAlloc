@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, Form, Request
 from sqlalchemy.orm import Session
 from database import get_db
-from models import Application, Hostel, Room, RoomChange, Checkout, Notification
+from models import Application, Allocation, Hostel, Room, RoomChange, Checkout, Notification
 from helpers import (
     render, go, flash, login_required, notify, current_cycle, window_open,
     active_allocation, bed_text,
@@ -22,9 +22,13 @@ def get_application(db, user_id, cycle):
     )
 
 
-def shown_status(application, cycle):
+def shown_status(db, application, cycle):
     if application is None:
         return None
+    if application.status == "allocated":
+        allocation = db.query(Allocation).filter_by(application_id=application.id).first()
+        if allocation and allocation.status == "Cancelled":
+            return "checked out"
     if application.status in ("allocated", "unallocated") and not cycle.published:
         return "submitted"
     return application.status
@@ -42,7 +46,7 @@ def home(request: Request, user=Depends(student_only), db: Session = Depends(get
     unread = db.query(Notification).filter_by(user_id=user.id, read=False).count()
     return render(
         request, "student_home.html", user=user, cycle=cycle, application=application,
-        status=shown_status(application, cycle), allocation=allocation, change=change,
+        status=shown_status(db, application, cycle), allocation=allocation, change=change,
         checkout=checkout, unread=unread, is_open=window_open(cycle),
         place=bed_text(allocation.bed) if allocation else None,
     )
@@ -56,7 +60,7 @@ def apply_page(request: Request, user=Depends(student_only), db: Session = Depen
     return render(
         request, "apply.html", user=user, cycle=cycle, application=application,
         hostels=hostels, is_open=window_open(cycle),
-        status=shown_status(application, cycle),
+        status=shown_status(db, application, cycle),
     )
 
 
