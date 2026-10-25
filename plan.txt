@@ -1,0 +1,1167 @@
+The LNM Institute of Information Technology, Jaipur Software Development Laboratory
+Course Code: CS314
+Lab Assignment 1: Project Identification and Initial Project Definition
+1.	Project Identification
+
+
+Item	Details
+Project Name	HostelAlloc
+Project Type	Web-based Hostel Room Allocation and Management System
+Team ID	T041
+Team Members	Yajas, Ninaad Mathur, Aryan Sawlani, Shaurya Behra
+Roll Numbers	24UCS012, 24UCS013, 24UCS014, 24UCS015
+Development Model	Agile + Incremental Development
+Primary Users	Students, Hostel Wardens, Hostel Administration Office, Institute Administration
+Development Team	Student software development team
+Course	Software Engineering
+Project Objective	To develop a centralized platform for allocating and managing hostel rooms for students
+Expected Outcome	A working, tested and documented software system developed incrementally
+2.	Project Background
+Current Problem
+Hostel room allocation at most institutes is still handled through a mix of spreadsheets, physical application forms, notice boards and manual verification by the hostel office. Every year, the same steps are repeated by hand: collecting applications, checking eligibility, deciding who gets which room, and updating registers when someone requests a change. This makes the process slow, hard to track, and prone to errors such as double allocation of a bed or outdated occupancy records. Students often have no visibility into how a decision was made or what the status of their application is, which leads to confusion and repeated visits to the hostel office.
+Proposed Solution
+HostelAlloc will bring the entire hostel allocation cycle onto a single platform — from students submitting their accommodation applications, to the hostel office reviewing and running the allocation, to students receiving their room details and being able to raise room-change requests. The goal is to replace scattered manual records with one system that everyone (students, wardens and administrators) can rely on. 
+
+3.	Project Vision
+HostelAlloc aims to give students and hostel administrators a transparent, reliable and easy-to-use platform for requesting, allocating and managing hostel accommodation, reducing manual paperwork and making the whole process easier to track.
+4.	Problem Statement
+Institutes with residential hostels need to allocate a limited number of rooms among a much larger number of applying students every academic year, based on criteria such as year of study, category or seniority. When this is done manually, the process is time-consuming for the hostel office, offers little transparency to students, and makes it difficult to maintain an accurate, up-to-date record of who is occupying which room. It also makes handling room-change requests and tracking vacancies unnecessarily cumbersome. HostelAlloc is proposed as a software solution that manages the complete allocation lifecycle through a single, centralized system.
+5.	Project Objectives
+The initial objectives of the project are:
+1.	To provide a platform where students can submit hostel accommodation applications online.
+2.	To allow the hostel administration to define hostels, rooms and bed capacity within the system.
+3.	To support allocation of rooms to students based on defined criteria (such as year of study, category or preference).
+4.	To let students view their allocation status and room details once processed.
+5.	To provide a mechanism for students to raise room-change or reallocation requests, with warden approval.
+6.	To maintain an accurate, up-to-date record of room occupancy at all times.
+7.	To track the hostel vacate/checkout process at the end of a stay.
+8.	To provide notifications to students regarding their application and allocation status.
+9.	To provide basic reports and a dashboard for hostel administrators.
+10.	To maintain role-based access control for students, wardens and administrators.
+11.	To ensure student personal and allocation data is stored and accessed securely, in line with role-based permissions.
+12.	To develop the system incrementally following sound software engineering practices. 
+
+
+6.	Stakeholders
+
+
+Stakeholder	Interest / Role
+Students	Apply for hostel accommodation, view allocation and request room changes
+Hostel Wardens	Review applications, run/verify allocation, approve room-change requests
+Hostel	Administration Office	Manage hostel/room inventory, oversee the overall allocation process
+Institute Administration	Monitor occupancy and obtain reports on hostel utilisation
+System	Development Team	Design, develop, test and maintain HostelAlloc
+7.	Initial Scope
+HostelAlloc will initially cover:
+·User registration/login
+·Role-based access (student, warden, administrator)
+·Hostel, room and bed inventory management
+·Online submission of hostel accommodation applications
+·Rule-based allocation of rooms to applicants
+·Publishing of allocation results to students
+·Room-change / reallocation request and approval workflow
+·Hostel vacate/checkout tracking
+·Notifications related to application and allocation status
+·Basic reports/dashboard for administrators
+Initially Out of Scope
+To keep the project manageable, the following are initially excluded:
+·Hostel fee payment and payment processing
+·Mess/food management
+·Visitor and outing management
+·Maintenance and repair-request tracking
+·Biometric or geo-based attendance
+·Dedicated mobile application (web-only in this phase)
+·Complaint/grievance handling beyond room-change requests
+·Waitlist management for oversubscribed hostels 
+
+8.	Initial Assumptions
+·Users will have access to the internet.
+·Students and staff will have valid institutional accounts or credentials.
+·The hostel administration will define the allocation criteria and rules in advance.
+·Basic hostel and room data (capacity, floors, etc.) will be available or can be entered digitally.
+·Room-change requests require warden approval before taking effect.
+·The system will initially be developed as a single-campus web application.
+·The system will use a centralized database.
+9.	Initial Constraints
+·Limited development time
+·Student development team
+·Limited access to real hostel and student data for testing
+·Limited infrastructure during development
+·Possible requirement changes during development
+·Need to protect student personal and allocation data
+·Limited testing with real users
+10.	Initial Success Criteria
+HostelAlloc will be considered successful if the team can demonstrate that:
+·different user roles (student, warden, administrator) can access appropriate functionality;
+·a student can submit a hostel accommodation application;
+·the administrator can set up hostels, rooms and bed capacity;
+·allocation can be run and results are visible to students;
+·a student can raise a room-change request and have it approved or rejected;
+·room occupancy records stay accurate as allocations and vacates happen;
+·important system functions are tested;
+·defects are documented and resolved;
+·the project is maintained in a controlled Git/GitHub repository;
+·the final system is accompanied by appropriate software engineering documentation.
+·student personal and allocation data is accessed only by authorized roles. 
+
+11.	AI Usage Policy – Student Declaration
+AI tools may be used as supporting tools for this assignment, but the submitted work must represent the team's own understanding and contribution.
+We declare that:
+·We have disclosed the use of AI tools, if any, during preparation of this assignment.
+·AI-generated content, if used, has been reviewed, verified, edited and adapted by the team.
+·We understand the project sufficiently to explain and defend all submitted content during a viva/discussion.
+·We have not submitted AI-generated content blindly or without verification.
+·We have not used AI to misrepresent work performed by the team.
+·The final document reflects the team's own project understanding and decisions.
+AI Tool(s) Used: ChatGPT
+Purpose of AI Use: used for drafting/refining wording of some sections Team ID: T041
+Team Member Names: Yajas, Ninaad Mathur, Aryan Sawlani, Shaurya Behra Date: 31 August 2026
+Team Declaration:
+We confirm that the information provided above is accurate and that we accept responsibility for the submitted work.
+Team Representative Signature/Confirmation: Shaurya Behra 
+
+The LNM Institute of Information Technology, Jaipur Software Development Laboratory
+Course Code: CS314
+Lab Assignment 2: Requirements Specification
+
+
+1.	User Classes
+1.1	Student
+Students are the primary applicants for hostel accommodation. They shall be able to:
+●	authenticate;
+●	submit a hostel accommodation application;
+●	view application status;
+●	view allocation/room details once processed;
+●	raise a room-change/reallocation request;
+●	track the status of a room-change request;
+●	receive notifications;
+●	view/track their vacate-checkout status.
+1.2	Hostel Warden
+The warden is responsible for reviewing and managing allocation-related decisions for their hostel(s). The warden shall be able to:
+●	review student applications;
+●	verify/approve the allocation for their hostel;
+●	review and approve/reject room-change requests;
+●	record/confirm vacate-checkout for students;
+●	view occupancy and reports for their hostel.
+1.3	Hostel Administration Office
+The hostel administration office manages the overall inventory and allocation process. They shall be able to:
+●	define hostels, rooms and bed capacity;
+●	define/configure allocation criteria and rules;
+●	initiate and run the allocation process;
+●	publish allocation results;
+●	monitor occupancy across hostels; 
+●	manage room-change requests where applicable;
+●	access administrative reports.
+1.4	Institute Administration
+Institute administration users shall have access to appropriate aggregated reports and dashboards for monitoring hostel occupancy and utilisation across the institute.
+1.5	System Administrator
+The system administrator shall:
+●	manage user accounts;
+●	assign roles;
+●	manage system-level configuration;
+●	monitor system activity;
+●	access administrative/audit reports.
+
+2.	System Context
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3.	Functional Requirements
+3.1	Authentication and Account Management
+FR-001 — User Login — The system shall allow a registered user to authenticate using valid credentials.
+FR-002 — Authentication Failure — The system shall notify the user when authentication fails without unnecessarily revealing sensitive authentication information.
+FR-003 — Logout — The system shall allow authenticated users to terminate their session. 
+FR-004 — Role Assignment — The system shall allow authorized administrators to assign roles to users.
+FR-005 — Role-Based Access — The system shall restrict system functions according to the user's assigned role.
+3.2	Hostel & Room Inventory Management
+FR-006 — Create Hostel — The system shall allow an authorized administrator to create a hostel record.
+FR-007 — Create Room — The system shall allow an authorized administrator to define rooms within a hostel, including bed capacity.
+FR-008 — Edit Inventory — The system shall allow an authorized administrator to modify hostel/room/bed details subject to occupancy constraints.
+FR-009 — View Inventory — The system shall allow authorized users to view current hostel/room/bed inventory and availability.
+3.3	Application Management
+FR-010 — Submit Application — The system shall allow an authenticated eligible student to submit a hostel accommodation application.
+FR-011 — Application Information — The system shall allow a student to specify relevant application details such as year of study, category, and room/hostel preference.
+FR-012 — Save Application Draft — The system shall allow a student to save an incomplete application as a draft.
+FR-013 — Edit Application — The system shall allow a student to modify their application before the application window closes.
+FR-014 — Application Status — The system shall allow a student to view the current status of their application.
+FR-015 — Withdraw Application — The system shall allow a student to withdraw their application before allocation is run.
+3.4	Allocation Management
+FR-016 — Configure Allocation Criteria — The system shall allow the hostel administration office to define allocation criteria and rules.
+FR-017 — Run Allocation — The system shall allow the hostel administration office to run the allocation process based on defined criteria.
+FR-018 — Verify Allocation — The system shall allow a warden to review/verify allocation results for their hostel.
+FR-019 — Publish Allocation — The system shall publish allocation results to students according to defined publication rules. 
+FR-020 — View Allocation Result — The system shall allow a student to view their allocated hostel, room and bed details once published.
+3.5	Room-Change / Reallocation Management
+FR-021 — Raise Room-Change Request — The system shall allow an allocated student to raise a room-change/reallocation request.
+FR-022 — Review Room-Change Request — The system shall allow an authorized warden to review a room-change request.
+FR-023 — Approve Room-Change Request — The system shall allow an authorized warden to approve a room-change request.
+FR-024 — Reject Room-Change Request — The system shall allow an authorized warden to reject a room-change request, with a reason.
+FR-025 — Update Occupancy on Approval — The system shall update room occupancy records when a room-change request is approved.
+FR-026 — View Request Status — The system shall allow a student to view the status of their room-change request.
+3.6	Occupancy & Vacate Management
+FR-027 — Maintain Occupancy Record — The system shall maintain an accurate, up-to-date record of room occupancy at all times.
+FR-028 — Initiate Vacate/Checkout — The system shall allow a student or warden to initiate the hostel vacate/checkout process.
+FR-029 — Confirm Vacate/Checkout — The system shall allow an authorized warden to confirm a student's vacate/checkout.
+FR-030 — Release Bed on Checkout — The system shall mark the corresponding bed as vacant upon confirmed checkout.
+3.7	Notification Management
+FR-031 — Application Notification — The system shall notify a student after successful application submission.
+FR-032 — Allocation Notification — The system shall notify a student when their allocation result is published.
+FR-033 — Room-Change Notification — The system shall notify a student when their room-change request is approved or rejected.
+FR-034 — General Update Notification — The system shall notify affected users when significant hostel/room information changes.
+3.8	Reporting
+FR-035 — Occupancy Report — The system shall generate occupancy reports for authorized users. 
+FR-036 — Application Report — The system shall generate application-summary reports for authorized users.
+FR-037 — Room-Change Report — The system shall generate reports on room-change requests and their outcomes.
+FR-038 — Administrative Dashboard — The system shall provide appropriate summary information to authorized administrators.
+
+4.	Business Rules
+BR-001 — Only authorized users (hostel administration office / administrator) can define hostels, rooms and bed capacity.
+BR-002 — A student can submit only one active application per allocation cycle.
+BR-003 — Applications can be submitted only during the defined application window. BR-004 — Allocation is run only after the application window closes.
+BR-005 — A room/bed cannot be allocated beyond its defined capacity.
+BR-006 — A student cannot hold more than one active room allocation at a time. BR-007 — Room-change requests require warden approval before taking effect.
+BR-008 — Occupancy records must be updated immediately upon allocation, approved room-change, or confirmed checkout.
+BR-009 — Only authorized users can access administrative/occupancy reports.
+BR-010 — A vacated bed becomes available for future allocation only after checkout is confirmed.
+
+5.	Non-Functional Requirements
+5.1	Performance
+NFR-001 — The system should provide acceptable response times for normal user operations.
+NFR-002 — The allocation process should complete within an acceptable time for the expected number of applicants.
+5.2	Security
+NFR-003 — Protected functionality shall require authentication. NFR-004 — Access to functionality shall be controlled by user roles.
+NFR-005 — Sensitive student information shall not be exposed to unauthorized users. NFR-006 — Administrative operations should be auditable.
+5.3	Usability
+NFR-007 — The interface shall use consistent navigation. 
+NFR-008 — Error messages shall be understandable to users.
+NFR-009 — Common activities such as applying and checking allocation status should require minimal unnecessary interaction.
+5.4	Reliability
+NFR-010 — Application and allocation records shall be maintained reliably.
+NFR-011 — Occupancy records shall not be lost during normal system operation.
+5.5	Availability
+NFR-012 — The system should be available during normal operating periods, except during planned maintenance, particularly during application and allocation windows.
+5.6	Maintainability
+NFR-013 — The software shall follow a modular architecture.
+NFR-014 — Source code shall be maintained using version control.
+NFR-015 — Software documentation shall be maintained alongside relevant system changes.
+5.7	Scalability
+NFR-016 — The architecture should allow the system to support an increasing number of hostels, rooms and student applications.
+5.8	Compatibility
+NFR-017 — The system should operate correctly on commonly used modern web browsers.
+5.9	Privacy
+NFR-018 — Student personal and allocation data shall be accessible only to authorized users.
+5.10	Auditability
+NFR-019 — Significant administrative actions (allocation runs, approvals, checkouts) should be recorded to support accountability and troubleshooting.
+
+6.	Data Requirements
+User
+●	User ID, Name, Email, Contact information, Role, Account status Hostel
+●	Hostel ID, Name, Total floors, Warden(s) assigned, Status
+Room
+●	Room ID, Hostel ID, Floor, Room number, Bed capacity, Room type/category, Status Bed
+●	Bed ID, Room ID, Occupancy status 
+Application
+●	Application ID, User ID, Academic year/category, Preferences, Submission date, Application status
+Allocation
+●	Allocation ID, Application ID, User ID, Hostel ID, Room ID, Bed ID, Allocation date, Allocation status
+RoomChangeRequest
+●	Request ID, User ID, Current Room ID, Requested Room ID/Hostel, Reason, Request date, Request status, Approver, Decision date
+Checkout
+●	Checkout ID, User ID, Room ID, Bed ID, Initiated date, Confirmed date, Status Notification
+●	Notification ID, Recipient, Notification type, Message, Timestamp, Status
+
+7.	Major Use Cases
+
+
+
+
+ID	Use Case	Primary Actor
+UC-001	Login	All users
+UC-002	Manage Users	System Administrator
+UC-003	Define Hostel/Room/Bed Inventory	Hostel Administration Office
+UC-004	Submit Application	Student
+UC-005	Configure Allocation Criteria	Hostel Administration Office
+UC-006	Run Allocation	Hostel Administration Office
+UC-007	Verify Allocation	Warden
+UC-008	Publish Allocation	Hostel Administration Office
+UC-009	View Allocation Result	Student
+UC-010	Raise Room-Change Request	Student
+UC-011	Approve/Reject Room-Change Request	Warden
+UC-012	Initiate Vacate/Checkout	Student/Warden
+Confirm
+Checkout	Confirm Checkout	Warden
+UC-014	Send Notification	System
+UC-015	Generate Reports	Authorized User
+ 
+
+
+8.	Detailed Use Cases
+UC-004 — Submit Application Primary Actor: Student Preconditions:
+●	Student is authenticated.
+●	Application window is currently open.
+●	Student does not already have an active application for the cycle. Main Flow:
+●	1. Student opens the application form.
+●	2. System displays required fields (year of study, category, preferences).
+●	3. Student fills in application details.
+●	4. Student submits the application.
+●	5. System validates the application window and eligibility.
+●	6. System checks for an existing active application.
+●	7. System creates the application record.
+●	8. System displays confirmation.
+●	9. System sends an application notification. Alternative Flows:
+●	If application window is closed → system rejects submission.
+●	If an active application already exists → system informs the student.
+●	If required fields are missing → system prompts for correction. Postcondition: A valid application record exists for the student for the current cycle. UC-006 — Run Allocation
+Primary Actor: Hostel Administration Office
+Preconditions:
+●	Application window has closed.
+●	Allocation criteria have been configured.
+●	Hostel/room/bed inventory is defined. Main Flow:
+●	1. Administration office initiates the allocation run.
+●	2. System retrieves all valid applications for the cycle. 
+●	3. System applies configured allocation criteria against available inventory.
+●	4. System generates proposed allocation results.
+●	5. System presents results for verification.
+●	6. Administration office reviews and confirms the run.
+●	7. System stores allocation results with status "Pending Verification". Alternative Flows:
+●	If inventory is insufficient for all applicants → system flags unallocated applications.
+●	If criteria configuration is incomplete → system prevents the run and notifies the office. Postcondition: Allocation results exist for the cycle, pending warden verification and publication.
+UC-011 — Approve/Reject Room-Change Request
+Primary Actor: Warden Preconditions:
+●	Student holds an active allocation.
+●	A room-change request has been submitted and is pending review. Main Flow:
+●	1. Warden opens the pending room-change request.
+●	2. System displays request details and reason.
+●	3. Warden reviews the request against available inventory.
+●	4. Warden approves or rejects the request.
+●	5. If approved, system updates occupancy records and reallocates the student.
+●	6. System updates the request status.
+●	7. System sends a notification to the student. Alternative Flows:
+●	If requested room/bed is no longer available → warden may reject or select an alternative.
+●	If warden provides no decision within the defined period → request remains pending (escalation optional).
+Postcondition: The room-change request has a final status (approved/rejected), and occupancy records are consistent with the outcome.
+
+9.	User Stories
+●	US-001: As a student, I want to log in so that I can securely access HostelAlloc.
+●	US-002: As a student, I want to submit a hostel accommodation application so that I can be considered for allocation. 
+●	US-003: As a student, I want to view my application status so that I know whether it has been processed.
+●	US-004: As a hostel administration office user, I want to define hostels, rooms and bed capacity so that inventory is accurately tracked.
+●	US-005: As a hostel administration office user, I want to configure allocation criteria so that rooms are assigned fairly and consistently.
+●	US-006: As a hostel administration office user, I want to run the allocation process so that students are assigned rooms based on the defined criteria.
+●	US-007: As a warden, I want to verify allocation results for my hostel so that only accurate allocations are published.
+●	US-008: As a student, I want to view my allocated room details so that I know where I have been assigned.
+●	US-009: As a student, I want to raise a room-change request so that I can request a different room if needed.
+●	US-010: As a warden, I want to approve or reject room-change requests so that reallocation happens only with proper review.
+●	US-011: As a student, I want to receive notifications about my application and allocation status so that I stay informed.
+●	US-012: As a warden, I want to confirm a student's checkout so that the room/bed is correctly marked as vacant.
+●	US-013: As an institute administration user, I want to view occupancy reports so that I can monitor hostel utilisation.
+●	US-014: As a system administrator, I want to manage user roles so that access to the system is controlled.
+
+10.	Acceptance Criteria
+US-002 — Submit Application
+●	AC-01: Student must be authenticated.
+●	AC-02: Application window must be open.
+●	AC-03: Student must not already have an active application for the cycle.
+●	AC-04: All required application fields must be completed.
+●	AC-05: Successful submission must create an application record.
+●	AC-06: Student must receive confirmation and a notification.
+US-006 — Run Allocation
+●	AC-01: Allocation can be run only after the application window closes.
+●	AC-02: Allocation criteria must be configured before the run. 
+●	AC-03: Allocation must not exceed defined room/bed capacity.
+●	AC-04: Applications that cannot be allocated must be flagged.
+●	AC-05: Allocation results must be stored with a "Pending Verification" status.
+US-009 — Raise Room-Change Request
+●	AC-01: Student must hold an active allocation.
+●	AC-02: Student must not have another pending room-change request.
+●	AC-03: Request must include a reason.
+●	AC-04: Successful submission must create a request record with "Pending" status.
+●	AC-05: Warden must be notified of the new request.
+11.	Requirements Prioritization Must Have
+●	Authentication and role-based access
+●	Hostel/room/bed inventory management
+●	Application submission
+●	Allocation configuration and run
+●	Allocation verification and publishing
+●	Occupancy record maintenance
+Should Have
+●	Room-change request and approval workflow
+●	Vacate/checkout tracking
+●	Notifications
+●	Basic reports/dashboard
+Could Have
+●	Waitlist management for oversubscribed hostels
+●	Advanced analytics on occupancy trends
+●	Complaint/grievance handling beyond room-change
+Won't Have in Initial Release
+●	Hostel fee payment processing
+●	Mess/food management
+●	Visitor and outing management
+●	Maintenance and repair-request tracking
+●	Biometric/geo-based attendance 
+●	Dedicated mobile application
+
+12.	Requirements Traceability
+
+
+
+
+Requirement	User Story	Use Case	Test
+FR-010	US-002	UC-004	TBD
+FR-017	US-006	UC-006	TBD
+FR-018	US-007	UC-006	TBD
+FR-021	US-009	UC-010	TBD
+FR-023	US-010	UC-011	TBD
+FR-029	US-012	UC-013	TBD
+FR-035	US-013	UC-015	TBD
+Note: TBD entries will be filled in during the testing phase.
+
+13.	Requirements Validation
+●	Correctness: Requirements trace back to stakeholder needs identified in Assignment 1 (students, wardens, hostel administration office, institute administration).
+●	Unambiguity: Requirements use "The system shall..." phrasing with a single reasonable interpretation.
+●	Completeness: Requirements cover the full allocation lifecycle — application, allocation, room-change, checkout, notifications and reporting.
+●	Consistency: No requirement conflicts with another; role-based access is applied uniformly.
+●	Verifiability: Each requirement can be tested against defined acceptance criteria.
+●	Feasibility: Requirements are implementable within the stated constraints (student team, limited time, web-only scope).
+●	Traceability: Each functional requirement maps to a user story and use case (see Section 12).
+●	Prioritization: Requirements are categorized using MoSCoW (Section 11).
+Modifiability: Requirements are modular and individually identified (FR/BR/NFR IDs), allowing changes without affecting the entire SRS.
+
+
+
+
+14.	AI Usage Policy – Student Declaration
+AI tools may be used as supporting tools for this assignment, but the submitted work must represent the team's own understanding and contribution. 
+We declare that:
+●	We have disclosed the use of AI tools, if any, during preparation of this assignment.
+●	AI-generated content, if used, has been reviewed, verified, edited and adapted by the team.
+●	We understand the project sufficiently to explain and defend all submitted content during a viva/discussion.
+●	We have not submitted AI-generated content blindly or without verification.
+●	We have not used AI to misrepresent work performed by the team.
+●	The final document reflects the team's own project understanding and decisions. AI Tool(s) Used: ChatGPT
+Purpose of AI Use: used for drafting/refining wording of some sections Team ID: T041
+Team Member Names: Yajas, Ninaad Mathur, Aryan Sawlani, Shaurya Behra Date: 7 September 2026
+Team Declaration:
+We confirm that the information provided above is accurate and that we accept responsibility for the submitted work.
+Team Representative Signature/Confirmation: Shaurya Behra
+
+15.	Contribution
+24UCS012: Defined user classes, functional requirements, business rules, and requirements prioritization.
+24UCS013: Documented use cases, technical NFRs, and reviewed requirements traceability.
+24UCS014: Prepared the system context diagram and data requirements.
+24UCS015: Wrote user stories, acceptance criteria, traceability matrix, and requirements validation.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The LNM Institute of Information Technology, Jaipur Software Development Laboratory
+Course Code: CS314 Team ID: T041
+Lab Assignment 3
+Scenario, Use Case and Activity Modelling
+1. Objective
+This assignment extends the Requirements Specification (SRS v1.0) prepared for HostelAlloc in Lab Assignment 2 by developing scenarios and UML models for the system. The same three detailed use cases selected in Assignment 2 - UC-004 (Submit Application), UC-006 (Run Allocation) and UC-011 (Approve/Reject Room-Change Request) - are carried forward and used consistently throughout this assignment.
+
+●	2. Scenarios
+A brief scenario is presented below for each of the three detailed use cases carried forward from Assignment 2.
+2.1. Scenario 1 - UC-004: Submit Application
+Actor(s) involved: Student (primary actor); System
+Starting condition: The student is authenticated, the hostel accommodation application window for the cycle is currently open, and the student does not already hold an active application for the cycle.
+Main sequence of activities:
+●	The student opens the hostel accommodation application form.
+●	The system displays the required fields - year of study, category and hostel/room preference.
+●	The student fills in the application details and submits the application.
+●	The system validates that the application window is open and that the student is eligible.
+●	The system checks that the student does not already have an active application for the cycle.
+●	The system creates the application record, displays a confirmation to the student, and sends an application notification.
+Important alternative/exception flow: If the application window has already closed, the system rejects the submission and informs the student that applications are no longer being accepted. If 
+the student already holds an active application for the current cycle, the system informs the student instead of creating a duplicate record.
+Expected outcome: A valid application record exists for the student for the current allocation cycle, and the student has received confirmation of successful submission.
+2.2. Scenario 2 - UC-006: Run Allocation
+Actor(s) involved: Hostel Administration Office (primary actor); System; Hostel Warden
+Starting condition: The application window has closed, the allocation criteria have been configured, and the hostel/room/bed inventory has been defined in the system.
+Main sequence of activities:
+●	The Hostel Administration Office initiates the allocation run.
+●	The system retrieves all valid applications submitted for the cycle.
+●	The system applies the configured allocation criteria against the available inventory and generates proposed allocation results.
+●	The system presents the proposed results to the office for verification.
+●	The office reviews and confirms the run.
+●	The system stores the allocation results with status “Pending Verification”, ready for the hostel warden to verify.
+Important alternative/exception flow: If the allocation criteria are not fully configured or the inventory is not ready, the system prevents the run and notifies the office rather than proceeding. If the available inventory is insufficient to accommodate every applicant, the system flags the unallocated applications for follow-up instead of failing the entire run.
+Expected outcome: Allocation results exist for the cycle and are ready for warden verification and subsequent publication to students, with any applications that could not be accommodated due to insufficient inventory flagged for follow-up rather than left unresolved.
+
+2.3. Scenario 3 - UC-011: Approve/Reject Room-Change Request
+Actor(s) involved: Hostel Warden (primary actor); System; Student
+Starting condition: The student holds an active room allocation, and a room-change/reallocation request submitted by the student is pending the warden's review.
+Main sequence of activities:
+●	The warden opens the pending room-change request.
+●	The system displays the request details and the reason given by the student. 
+●	The warden reviews the request against the currently available inventory and decides to approve or reject it.
+●	If approved, the system checks availability of the requested room/bed, updates the occupancy records, reallocates the student, and marks the request as Approved.
+●	If rejected, the system marks the request as Rejected.
+●	The system sends a notification to the student informing them of the decision.
+Important alternative/exception flow: If the warden approves the request but the requested room/bed is no longer available by the time it is processed, the system informs the warden, who may reject the request or select an alternative room instead. If the warden does not record a decision within the defined review period, the request remains pending (escalation is optional and configurable).
+Expected outcome: The room-change request reaches a final status (Approved or Rejected), the occupancy records remain consistent with that outcome, and the student has been notified of the decision.
+
+●	3. Use Case Diagram
+The UML Use Case Diagram below shows the complete HostelAlloc system boundary, the five actors (Student, Hostel Warden, Hostel Administration Office, Institute Administration and System Administrator), the fifteen system use cases, actor–use case associations, the relevant
+<<include>> and <<extend>> relationships, and generalizations linking Hostel Warden and Hostel Administration Office to an abstract Staff actor. The three detailed use cases carried forward from Assignment 2 - UC-004 Submit Application, UC-006 Run Allocation and UC-011 Approve/Reject Room-Change Request - are shown shaded. 
+
+ 
+Figure 1: HostelAlloc - UML Use Case Diagram 
+Relationship notes:
+●	<<include>> - UC-004, UC-006 and UC-011 each include UC-001 (Login), since all three require an authenticated user before proceeding; UC-008 (Publish Allocation) and UC-011 each include UC-014 (Send Notification), since both trigger a notification to the affected student; UC-002 (Manage Users) includes UC-014 for account-related alerts.
+●	<<extend>> - UC-013 (Confirm Checkout) extends UC-007 (Verify Allocation) as an optional continuation once a room has been vacated and re-verification of occupancy is needed.
+●	Generalization - Hostel Warden and Hostel Administration Office are both specializations of the abstract Staff actor. Both generalizations are drawn, and Staff is associated with Login.
+
+●	4. Activity Diagrams
+A UML Activity Diagram is presented below for each of the three detailed use cases, showing initial and final nodes, activities, control flow, decision points, merge points where applicable, and swimlanes for the actors and system involved. UC-006 ends when allocation results are ready for warden verification; verification itself belongs to UC-007. 
+•	4.1. Activity Diagram - UC-004: Submit Application
+
+Figure 2: Activity Diagram - UC-004 Submit Application 
+•	4.2. Activity Diagram - UC-006: Run Allocation
+
+Figure 3: Activity Diagram - UC-006 Run Allocation 
+•	4.3. Activity Diagram - UC-011: Approve/Reject Room-Change Request
+
+Figure 4: Activity Diagram - UC-011 Approve/Reject Room-Change Request
+The approval and rejection paths meet at a merge diamond before the system sends the decision notification. These are alternative paths, so a synchronization (join) bar is not used.
+
+
+
+
+
+●	5. Individual Contribution
+
+Roll Number	Student	Contribution
+24UCS012	Yajas	Scenario for UC-004; Use Case Diagram actors, use cases and associations.
+24UCS013	Ninaad Mathur	Scenario for UC-006; <<include>>/<<extend>> relationships and Activity Diagram for UC-006.
+24UCS014	Aryan Sawlani	Scenario for UC-011; Activity Diagrams for UC-004 and UC-011.
+24UCS015	Shaurya Behra	Consistency review across requirements, use cases and diagrams; document compilation and formatting.
+6. AI Usage Policy – Student Declaration
+AI tools may be used as supporting tools for this assignment. The team is responsible for the correctness, consistency and understanding of all submitted scenarios and UML models.
+●	We have disclosed the use of AI tools, if any.
+●	AI-generated suggestions have been reviewed, verified and adapted by the team.
+●	We understand and can explain the submitted scenarios, use case diagram and activity diagrams.
+●	We have verified that the UML models are consistent with our project's requirements, use cases and scope.
+●	The final submission represents our team's understanding and modeling decisions. AI Tool(s) Used: ChatGPT / Claude
+Purpose of AI Use: used for drafting/refining scenario wording and for generating draft UML diagram layouts, subsequently reviewed and adapted by the team
+Team ID: T041
+Team Representative: Shaurya Behra Date: 12 September 2026
+Team Declaration: We confirm that the information provided above is accurate and that we accept responsibility for the submitted work.
+Team Representative Signature/Confirmation: Shaurya Behra
+
+
+
+
+
+
+
+
+
+
+
+
+The LNM Institute of Information Technology, Jaipur Software Development Laboratory
+Course Code: CS314 Team ID: T041
+Lab Assignment 4
+Classes, Object Diagram and Relationships
+
+Item	Details
+Team Members	Yajas, Ninaad Mathur, Aryan Sawlani, Shaurya Behra
+Roll Numbers	24UCS012, 24UCS013, 24UCS014, 24UCS015
+Course	Software Engineering
+Use Cases Modelled	UC-004 Submit Application, UC-006 Run Allocation, UC-011 Approve/Reject Room-Change Request
+ 
+Consistency chain maintained throughout: Assignment 2 Requirements → 3 Use Cases → Assignment 3 Activities → Classes → Objects → Relationships.
+Part 1 — Classes
+1. Objective and Scope
+This document identifies the classes needed to support the same three detailed use cases carried through Assignments 2 and 3:
+Use Case	Title	Primary Actor
+UC-004	Submit Application	Student
+UC-006	Run Allocation	Hostel Administration Office
+UC-011	Approve/Reject Room-Change Request	Hostel Warden
+ 
+The consistency chain required by the assignment is followed strictly: Assignment 2 requirements (FR / BR / NFR / Data Requirements) → 3 use cases → Assignment 3 activity diagrams → Classes → Objects → Relationships. No new functionality has been added. Anything outside the three use cases (checkout, reports, user administration) is deliberately not modelled (see Section 7).
+2. How the Classes Were Identified
+The steps follow the standard class-identification approach:
+·        Underline the nouns in the detailed use cases (Assignment 2, Section 8), the scenarios and the activity-diagram steps (Assignment 3).
+·        Separate actions from things — e.g. Submit is an action while Application is the entity; Login is an activity, so it becomes an operation (User.login()) rather than a class.
+·        Apply the four tests to every candidate: it becomes a class only if it (1) has information/data, (2) has its own identity, (3) has behaviour/responsibilities, and (4) has relationships with other concepts.
+·        Keep only important attributes/operations — how much detail is actually needed. Create and Publish are different operations, so they are kept separate when both are needed.
+·        Naming: classes use UpperCamelCase, attributes and operations use lowerCamelCase. Visibility: − for private attributes, + for public operations.
+·        Not every actor becomes a class — only actors that behave as system users in the three use cases are modelled (Student, Hostel Warden, Hostel Administration Office).
+3. Candidate Analysis
+Candidate (noun / phrase)	Where it appears	Decision	Reason
+Student	UC-004, UC-011	Class: Student	Actor with data and behaviour
+Hostel Warden	UC-011, UC-006 (verification)	Class: HostelWarden	Decides room-change requests
+Hostel Administration Office	UC-006	Class: HostelAdminOfficer	The office user who runs/confirms allocation
+Institute Administration, System Administrator	Assignment 3 use case model	Not a class	Do not take part in UC-004/006/011; represented only by the value of User.role
+System / HostelAlloc	All use cases	Not a class	It is the system boundary, not a domain entity
+Application form	UC-004 steps 1–3	Not a class	UI element; its fields become attributes of Application
+Application (record)	UC-004	Class: Application	Has data, identity, status, relationships
+Application window	UC-004, UC-006	Not a class	Open/close dates and status are attributes of AllocationCycle
+Allocation cycle	BR-002..004	Class: AllocationCycle	Owns the window; scopes applications and runs
+Allocation criteria	UC-006	Class: AllocationCriteria	Has data (rules) and the isComplete() check that can block a run
+Allocation run	UC-006	Class: AllocationRun	One execution with its own status and counts
+Proposed / stored allocation results	UC-006	Class: Allocation	One student-to-bed assignment; allocationStatus distinguishes "Pending Verification" etc.
+Unallocated applications	UC-006 alt. flow	Not a class	Represented by Application.status = Unallocated
+Hostel / room / bed inventory	UC-006, UC-011	Classes: Hostel, Room, Bed	"Inventory" is only the collection of these three
+Occupancy records	UC-011, BR-008	Not a separate class	Bed.occupancyStatus plus the Allocation link is the single source of truth (avoids duplicate data)
+Room-change request	UC-011	Class: RoomChangeRequest	Data, identity, status lifecycle
+Review period	UC-011 alt. flow	Not a class	Attribute RoomChangeRequest.reviewDeadline
+Alternative room	UC-011 alt. flow	Not a class	Just another Room chosen by HostelWarden.selectAlternative()
+Decision (Approved / Rejected)	UC-011	Not a class	Represented by RoomChangeRequest.requestStatus, decisionDate, decisionRemark
+Notification / confirmation	UC-004 step 9, UC-011 step 7	Class: Notification	Data, identity, recipient
+Send Notification (UC-014)	Included by UC-011	Class: NotificationService	Control class for the included use case
+Matching / applying criteria	UC-006 steps 3–4	Class: AllocationEngine	Control class holding the allocation logic
+Login / Logout / Authenticate	UC-001 (included)	Operation	Activity, not a thing: User.login(), User.logout()
+Checkout, Reports	UC-012/013/015	Not modelled	Outside the three selected use cases
+ 
+4. Class Catalogue (17 Classes)
+#	Class	Kind	Responsibility	Traced To
+1	User	Abstract entity	Common base for every person who logs in to HostelAlloc; holds account data and handles authentication and receiving notifications.	UC-001 (included by UC-004/006/011); FR-001, FR-003, FR-005; NFR-003/004; Data Req. 'User'
+2	Student	Actor entity	The applicant / resident. Submits the hostel application, is checked for eligibility, holds an allocation and raises room-change requests.	UC-004 (primary actor), UC-011 (notified actor); FR-010, FR-011, FR-021; BR-002
+3	Staff	Abstract entity	Abstract generalization of hostel staff roles (mirrors the abstract Staff actor of the Assignment 3 use case model).	Assignment 3 use case model (Staff generalization); FR-009
+4	HostelWarden	Actor entity	Reviews a pending room-change request against inventory and approves, rejects or offers an alternative room.	UC-011 (primary actor), UC-006 (verifies results afterwards); FR-022, FR-023, FR-024; BR-007
+5	HostelAdminOfficer	Actor entity	User of the Hostel Administration Office who initiates, reviews and confirms the allocation run.	UC-006 (primary actor); FR-016, FR-017; US-006
+6	Hostel	Entity	A hostel building in the inventory; owns its rooms and reports vacancies and occupancy.	UC-006 (inventory precondition), UC-011 (review against inventory); FR-006, FR-009; Data Req. 'Hostel'
+7	Room	Entity	A room inside a hostel with a fixed bed capacity; the unit a student asks to move to.	UC-006, UC-011 ('requested room/bed'); FR-007; BR-005; Data Req. 'Room'
+8	Bed	Entity	The smallest allocatable unit; its occupancy status is the authoritative occupancy record.	UC-006 ('available inventory'), UC-011 ('update occupancy'); FR-025, FR-027; BR-005, BR-008, BR-010; Data Req. 'Bed'
+9	AllocationCycle	Entity	One allocation cycle with its application window; decides whether applications are accepted and when allocation may run.	UC-004 ('window open?'), UC-006 (precondition: window closed); BR-002, BR-003, BR-004
+10	Application	Entity	A student's hostel accommodation application for one cycle; validated on submission and later consumed (or flagged) by the allocation run.	UC-004 (creates record), UC-006 ('retrieve valid applications', 'flag unallocated'); FR-010, FR-011, FR-014; BR-002; Data Req. 'Application'
+11	AllocationCriteria	Entity	The configured rules (year priority, category, preference weight) applied by the run; the run is blocked if they are incomplete.	UC-006 ('criteria set and inventory ready?', 'apply criteria'); FR-016; AC-02 of US-006
+12	AllocationRun	Entity	One execution of the allocation process: checks readiness, produces proposed results, is confirmed by the office and stores results as 'Pending Verification'.	UC-006 (whole activity diagram); FR-017; BR-004; AC-01..05 of US-006
+13	Allocation	Entity	Assignment of one student to one bed (hence room and hostel). Starts as 'Pending Verification'; is re-pointed to a new bed when a room change is approved.	UC-006 ('generate proposed results', 'store as Pending Verification'), UC-011 ('reallocate student'); BR-005, BR-006, BR-008; Data Req. 'Allocation'
+14	RoomChangeRequest	Entity	A student's request to move rooms, waiting for the warden's decision; ends as Approved or Rejected (or stays Pending past the review period).	UC-011 (whole activity diagram); FR-021..FR-026; BR-007; AC-01..05 of US-009; Data Req. 'RoomChangeRequest'
+15	Notification	Entity	A message delivered to a user (application confirmation, new-request alert to the warden, decision notice to the student, run-blocked alert to the office).	UC-004 step 9, UC-006 (prevent run; notify office), UC-011 step 7; UC-014 (included); FR-031, FR-033; Data Req. 'Notification'
+16	AllocationEngine	Control	Control class holding the matching logic: applies criteria to available beds and proposes allocations; identifies applicants who cannot be placed.	UC-006 ('apply criteria to available inventory', 'generate proposed results', 'flag unallocated'); FR-017; NFR-002
+17	NotificationService	Control	Control class behind the included use case UC-014 (Send Notification); creates and dispatches Notification objects.	UC-014 (<<include>> from UC-011; used by UC-004 and UC-006); FR-031, FR-033
+ 
+5. Class Specifications
+Attributes are written as − name : Type; operations are written as + name(params) : ReturnType. These are exactly the members drawn in the class diagram (Section 9). Only representative operations/attributes traced to the three selected use cases are listed.
+5.1 User (abstract)
+Common base for every person who logs in to HostelAlloc; holds account data and handles authentication and receiving notifications.
+Attribute	Type
+userId	String
+name	String
+email	String
+contactInfo	String
+role	String
+accountStatus	String
+ 
+Operations / Responsibilities
+·        + login(credentials) : boolean
+·        + logout() : void
+·        + receiveNotification(n : Notification) : void
+Traceability: UC-001 (included by UC-004/006/011); FR-001, FR-003, FR-005; NFR-003/004; Data Req. 'User'
+5.2 Student
+The applicant / resident. Submits the hostel application, is checked for eligibility, holds an allocation and raises room-change requests.
+Attribute	Type
+rollNumber	String
+yearOfStudy	int
+category	String
+ 
+Operations / Responsibilities
+·        + submitApplication(cycle, details) : Application
+·        + hasActiveApplication(cycle) : boolean
+·        + isEligible(cycle) : boolean
+·        + raiseRoomChangeRequest(reason, room) : RoomChangeRequest
+Traceability: UC-004 (primary actor), UC-011 (notified actor); FR-010, FR-011, FR-021; BR-002
+5.3 Staff (abstract)
+Abstract generalization of hostel staff roles (mirrors the abstract Staff actor of the Assignment 3 use case model).
+Attribute	Type
+staffId	String
+designation	String
+ 
+Operations / Responsibilities
+·        + viewInventory() : List<Room>
+Traceability: Assignment 3 use case model (Staff generalization); FR-009
+5.4 HostelWarden
+Reviews a pending room-change request against inventory and approves, rejects or offers an alternative room.
+Attribute	Type
+(none of its own — inherits from Staff)	 
+ 
+Operations / Responsibilities
+·        + openRequest(r : RoomChangeRequest) : void
+·        + approveRequest(r, bed : Bed) : void
+·        + rejectRequest(r, reason : String) : void
+·        + selectAlternative(r, room : Room) : Room
+Traceability: UC-011 (primary actor), UC-006 (verifies results afterwards); FR-022, FR-023, FR-024; BR-007
+5.5 HostelAdminOfficer
+User of the Hostel Administration Office who initiates, reviews and confirms the allocation run.
+Attribute	Type
+(none of its own — inherits from Staff)	 
+ 
+Operations / Responsibilities
+·        + initiateAllocationRun(cycle) : AllocationRun
+·        + reviewResults(run) : void
+·        + confirmRun(run) : void
+Traceability: UC-006 (primary actor); FR-016, FR-017; US-006
+5.6 Hostel
+A hostel building in the inventory; owns its rooms and reports vacancies and occupancy.
+Attribute	Type
+hostelId	String
+name	String
+totalFloors	int
+status	String
+ 
+Operations / Responsibilities
+·        + getRooms() : List<Room>
+·        + getVacantBeds() : List<Bed>
+·        + getOccupancy() : int
+Traceability: UC-006 (inventory precondition), UC-011 (review against inventory); FR-006, FR-009; Data Req. 'Hostel'
+5.7 Room
+A room inside a hostel with a fixed bed capacity; the unit a student asks to move to.
+Attribute	Type
+roomId	String
+floor	int
+roomNumber	String
+bedCapacity	int
+roomType	String
+status	String
+ 
+Operations / Responsibilities
+·        + hasVacancy() : boolean
+·        + getVacantBeds() : List<Bed>
+Traceability: UC-006, UC-011 ('requested room/bed'); FR-007; BR-005; Data Req. 'Room'
+5.8 Bed
+The smallest allocatable unit; its occupancy status is the authoritative occupancy record.
+Attribute	Type
+bedId	String
+occupancyStatus	String
+ 
+Operations / Responsibilities
+·        + isAvailable() : boolean
+·        + markOccupied() : void
+·        + markVacant() : void
+Traceability: UC-006 ('available inventory'), UC-011 ('update occupancy'); FR-025, FR-027; BR-005, BR-008, BR-010; Data Req. 'Bed'
+5.9 AllocationCycle
+One allocation cycle with its application window; decides whether applications are accepted and when allocation may run.
+Attribute	Type
+cycleId	String
+academicYear	String
+windowOpenDate	Date
+windowCloseDate	Date
+status	String
+ 
+Operations / Responsibilities
+·        + isWindowOpen() : boolean
+·        + closeWindow() : void
+Traceability: UC-004 ('window open?'), UC-006 (precondition: window closed); BR-002, BR-003, BR-004
+5.10 Application
+A student's hostel accommodation application for one cycle; validated on submission and later consumed (or flagged) by the allocation run.
+Attribute	Type
+applicationId	String
+yearOfStudy	int
+category	String
+preferences	String
+submissionDate	Date
+status	String
+ 
+Operations / Responsibilities
+·        + validate() : boolean
+·        + isActive() : boolean
+·        + markAllocated() : void
+·        + flagUnallocated() : void
+Traceability: UC-004 (creates record), UC-006 ('retrieve valid applications', 'flag unallocated'); FR-010, FR-011, FR-014; BR-002; Data Req. 'Application'
+5.11 AllocationCriteria
+The configured rules (year priority, category, preference weight) applied by the run; the run is blocked if they are incomplete.
+Attribute	Type
+criteriaId	String
+yearPriority	String
+categoryRules	String
+preferenceWeight	int
+ 
+Operations / Responsibilities
+·        + isComplete() : boolean
+·        + scoreOf(a : Application) : int
+Traceability: UC-006 ('criteria set and inventory ready?', 'apply criteria'); FR-016; AC-02 of US-006
+5.12 AllocationRun
+One execution of the allocation process: checks readiness, produces proposed results, is confirmed by the office and stores results as 'Pending Verification'.
+Attribute	Type
+runId	String
+runDate	Date
+status	String
+totalApplications	int
+allocatedCount	int
+unallocatedCount	int
+ 
+Operations / Responsibilities
+·        + checkReadiness() : boolean
+·        + execute() : void
+·        + confirm() : void
+·        + storePendingVerification() : void
+Traceability: UC-006 (whole activity diagram); FR-017; BR-004; AC-01..05 of US-006
+5.13 Allocation
+Assignment of one student to one bed (hence room and hostel). Starts as 'Pending Verification'; is re-pointed to a new bed when a room change is approved.
+Attribute	Type
+allocationId	String
+allocationDate	Date
+allocationStatus	String
+ 
+Operations / Responsibilities
+·        + isActive() : boolean
+·        + markPendingVerification() : void
+·        + reallocate(newBed : Bed) : void
+Traceability: UC-006 ('generate proposed results', 'store as Pending Verification'), UC-011 ('reallocate student'); BR-005, BR-006, BR-008; Data Req. 'Allocation'
+5.14 RoomChangeRequest
+A student's request to move rooms, waiting for the warden's decision; ends as Approved or Rejected (or stays Pending past the review period).
+Attribute	Type
+requestId	String
+reason	String
+requestDate	Date
+requestStatus	String
+decisionDate	Date
+decisionRemark	String
+reviewDeadline	Date
+ 
+Operations / Responsibilities
+·        + isPending() : boolean
+·        + approve(w : HostelWarden, bed : Bed) : void
+·        + reject(w : HostelWarden, reason : String) : void
+·        + isReviewPeriodOver() : boolean
+Traceability: UC-011 (whole activity diagram); FR-021..FR-026; BR-007; AC-01..05 of US-009; Data Req. 'RoomChangeRequest'
+5.15 Notification
+A message delivered to a user (application confirmation, new-request alert to the warden, decision notice to the student, run-blocked alert to the office).
+Attribute	Type
+notificationId	String
+notificationType	String
+message	String
+timestamp	DateTime
+status	String
+ 
+Operations / Responsibilities
+·        + markRead() : void
+Traceability: UC-004 step 9, UC-006 (prevent run; notify office), UC-011 step 7; UC-014 (included); FR-031, FR-033; Data Req. 'Notification'
+5.16 AllocationEngine
+Control class holding the matching logic: applies criteria to available beds and proposes allocations; identifies applicants who cannot be placed.
+Attribute	Type
+strategy	String
+ 
+Operations / Responsibilities
+·        + generateProposals(apps, criteria, beds) : List<Allocation>
+·        + findUnallocated() : List<Application>
+Traceability: UC-006 ('apply criteria to available inventory', 'generate proposed results', 'flag unallocated'); FR-017; NFR-002
+5.17 NotificationService
+Control class behind the included use case UC-014 (Send Notification); creates and dispatches Notification objects.
+Attribute	Type
+channel	String
+ 
+Operations / Responsibilities
+·        + sendNotification(to : User, type, message) : Notification
+Traceability: UC-014 (<<include>> from UC-011; used by UC-004 and UC-006); FR-031, FR-033
+ 
+6. Proposed Value Sets for Status Attributes
+These are design decisions of the team and can be adjusted without changing the class structure.
+Attribute	Values
+User.accountStatus	Active, Inactive
+Hostel.status / Room.status	Active or Available, Full, Inactive
+Bed.occupancyStatus	Vacant, Occupied
+AllocationCycle.status	Upcoming, Open, Closed
+Application.status	Draft, Submitted, Allocated, Unallocated, Withdrawn
+AllocationRun.status	Initiated, Blocked, Proposed, Confirmed
+Allocation.allocationStatus	Pending Verification, Verified, Published, Cancelled
+RoomChangeRequest.requestStatus	Pending, Approved, Rejected
+Notification.status	Sent, Read, Failed
+ 
+
+7. Class Diagram
+Complete class diagram (UML notation) of the 17 classes with their attributes and operations and all relationships between them: generalizations (G), compositions (C), the aggregation (AG), associations (A) with multiplicities, and dependencies (D, dashed). The justification of every relationship is given in Part 3.
+ 
+Figure 1 — HostelAlloc class diagram (UC-004, UC-006, UC-011)
+The three detailed use cases UC-004, UC-006 and UC-011 are supported end-to-end by this model. Notation: hollow triangle = generalization; filled diamond = composition; hollow diamond = aggregation; plain line = association with multiplicities; dashed arrow = dependency; {abstract} classes in italics.
+
+Part 2 — Object Diagram
+1. Scenario Represented (UC-011 Approve/Reject Room-Change Request)
+This object diagram captures HostelAlloc at the moment the warden opens a pending room-change request in UC-011. Student S1 (Riya Verma, second year) holds the published allocation A1 for bed B1 in room R1 of hostel H1; A1 came from application AP1, submitted in cycle CY1 and produced by the confirmed run RUN1 that officer OFF1 initiated. She has raised request RC1, still Pending, asking for room R2 in the same hostel, and warden W1, who manages H1, has already received notification N1 about it. No warden is linked to RC1 yet (decidedBy is empty), so the request has no final status. If W1 approves it, A1 would be re-pointed from B1 to a vacant bed of R2, B1 becomes Vacant and RC1 becomes Approved.
+This snapshot was chosen because UC-011 touches the widest slice of the class model: it reaches back through the results of UC-006 (AllocationRun, Allocation) and UC-004 (Application, AllocationCycle). All data values in the diagram are sample values dated 18 September 2026.
+
+2. Object Diagram
+Each box is an object (underlined name : Class) with its attribute values; each line is a link and carries the name of the relationship it instantiates, with the relationship ID from Part 3 in brackets.
+ 
+Figure 2 — Object diagram for the UC-011 snapshot (18 September 2026)
+
+3. Consistency with the Class Model
+·        Every object is an instance of a class in Part 1 (Classes), and every attribute shown exists in that class or is inherited (e.g. userId, name from User; staffId, designation from Staff).
+·        Every link instantiates a relationship of the class diagram; link names equal association names.
+·        All mandatory multiplicities hold for the objects shown: e.g. A1 has exactly one student (S1), one application (AP1), one bed (B1) and one run (RUN1); RC1 has exactly one student, one allocation and one requested room; H1 has at least one room and at least one warden.
+·        RC1 has no decidedBy link. This is allowed by the 0..1 multiplicity (A11) and is exactly what "Pending" means.
+·        Only representative attributes are shown. Beds and rooms not needed for this snapshot (for example the second bed of R1) are omitted, as is normal for an object diagram.
+·        The dates and identifiers are sample values consistent with the Assignment 2 data requirements.
+Part 3 — Relationships
+1. Reading the Model
+Reading multiplicities: the number written next to a class is how many instances of that class take part for one instance of the class at the other end. Example: Student 1 --- 0..* Application means one student can have zero or more applications, and each application belongs to exactly one student.
+Relationship IDs (G, C, AG, A, D) are written on every line of the diagrams below so that the object diagram in Part 2 can point back to the relationship each link instantiates.
+2. Summary
+Type	Count	IDs
+Generalization	4	G1, G2, G3, G4
+Composition	3	C1, C2, C3
+Aggregation	1	AG1
+Association	13	A1–A13
+Dependency	9	D1–D9
+ 
+3. Generalization / Inheritance
+ 
+Figure 3 — Generalization hierarchy (G1–G4)
+ID	Relationship	Justification
+G1	User ← Student	A student is a user who logs in (UC-001 is included by UC-004). Role-based access (FR-005) hangs off the shared User data.
+G2	User ← Staff	All hostel staff log in with the same account model; Staff is abstract, exactly like the abstract Staff actor in the Assignment 3 use case model.
+G3	Staff ← HostelWarden	The warden is a staff specialization (Assignment 3: 'Hostel Warden and Hostel Administration Office are specializations of the abstract Staff actor').
+G4	Staff ← HostelAdminOfficer	The Hostel Administration Office user is the second staff specialization; it runs allocation (UC-006) whereas the warden decides room changes (UC-011).
+ 
+The hierarchy User ← Staff ← {HostelWarden, HostelAdminOfficer} and User ← Student mirrors the abstract Staff actor and its two specializations in the Assignment 3 use case model. User and Staff are abstract: no object is ever just a user or just a staff member.
+4. Composition and Aggregation
+Composition = strong whole-part: the part cannot exist without the whole and is deleted with it. Aggregation = whole-part where the part keeps an independent lifetime.
+ 
+Figure 4 — Compositions (C1–C3, filled diamond) and aggregation (AG1, hollow diamond)
+ID	Relationship	Justification
+C1	Hostel ◆ Room (1 : 1..*), contains	A room is defined within a hostel (FR-007) and has no meaning without it; deleting a hostel removes its rooms. Every hostel has at least one room.
+C2	Room ◆ Bed (1 : 1..*), contains	Beds exist only as part of a room and the number of beds equals the room's bed capacity, so a bed can never be allocated beyond capacity.
+C3	AllocationCycle ◆ AllocationCriteria (1 : 0..1), hasCriteria	Criteria are configured for one cycle and are meaningless outside it. 0..1 because a cycle may not be configured yet; the run is then prevented (UC-006 alternative flow).
+AG1	AllocationRun ◇ Allocation (1 : 0..*), produces	A run groups the allocations it generates, but an Allocation outlives the run: it stays with the student and is later changed by an approved room-change (UC-011). Hence aggregation (shared, independent lifetime), not composition.
+ 
+Composition vs. aggregation in this model: Room and Bed disappear with their Hostel, so they are compositions. An Allocation, however, is produced by an AllocationRun but lives on after the run — it is published, held by the student and later changed by an approved room-change — so it is only an aggregation.
+
+5. Associations with Multiplicity
+ 
+Figure 5 — Associations A1–A13 with multiplicities
+All associations are navigable in both directions in the analysis model; navigability can be restricted during design.
+ID	Association	Justification
+A1	Student 1 — submits — 0..* Application	One student may apply in several cycles, but BR-002 allows only one active application per cycle.
+A2	AllocationCycle 1 — accepts — 0..* Application	Every application belongs to exactly one cycle; the cycle's window is checked on submission.
+A3	Application 1 — resultsIn — 0..1 Allocation	An application ends in at most one allocation; 0 when it is flagged unallocated because inventory ran out.
+A4	Student 1 — holds — 0..1 Allocation	A student cannot hold more than one active allocation (BR-006); gives UC-011 its precondition.
+A5	Allocation 0..1 — occupies — 1 Bed	An allocation points to exactly one bed; a bed carries at most one allocation, so capacity is never exceeded.
+A6	AllocationRun 0..* — runsFor — 1 AllocationCycle	A run always works on one cycle and may be started only after that cycle's window has closed.
+A7	AllocationRun 0..* — initiatedBy — 1 HostelAdminOfficer	The office user who initiates, reviews and confirms the run.
+A8	RoomChangeRequest 0..* — raisedBy — 1 Student	Each request is raised by exactly one student; only one may be pending at a time (AC-02 of US-009).
+A9	RoomChangeRequest 0..* — concerns — 1 Allocation	The request concerns the student's current allocation, re-pointed to the new bed on approval.
+A10	RoomChangeRequest 0..* — requestedRoom — 1 Room	The room the student asks for; the warden reviews it against currently available inventory.
+A11	RoomChangeRequest 0..* — decidedBy — 0..1 HostelWarden	0..1 because a pending request has no approver yet; exactly one warden once decided.
+A12	HostelWarden 1..* — manages — 1..* Hostel	A hostel has one or more wardens assigned and a warden may look after more than one hostel.
+A13	User 1 — receives — 0..* Notification	Every notification has one recipient: student, warden, or office. Modelled on User so all roles are covered.
+ 
+
+6. Dependencies
+Dependencies (dashed arrow with stereotype) are used where a class only uses or creates another temporarily and does not keep a permanent reference to it.
+ 
+Figure 6 — Dependencies D1–D9
+ID	Client → Supplier	Justification
+D1	AllocationRun → AllocationEngine «use»	The run delegates matching to the engine (steps 'apply criteria' and 'generate proposed results').
+D2	AllocationEngine → Application «use»	Reads the valid applications retrieved for the cycle.
+D3	AllocationEngine → AllocationCriteria «use»	Uses the configured criteria to score and order applicants.
+D4	AllocationEngine → Bed «use»	Looks up vacant beds in the available inventory; it changes no Bed itself.
+D5	AllocationEngine → Allocation «create»	Instantiates the proposed Allocation objects.
+D6	Application → NotificationService «use»	After creating the record the system sends an application notification.
+D7	RoomChangeRequest → NotificationService «use»	After a decision the system sends a decision notification (UC-011 includes UC-014).
+D8	AllocationRun → NotificationService «use»	When criteria/inventory are not ready the system prevents the run and notifies the office.
+D9	NotificationService → Notification «create»	Instantiates the Notification that is delivered to the recipient.
+ 
+NotificationService is a dependency rather than an association on purpose: Application, RoomChangeRequest and AllocationRun just call it, mirroring the <<include>> of UC-014 in the Assignment 3 use case model. The persistent link is User 1 --- 0..* Notification (A13).
+
+7. Key Design Decisions
+Rule	Enforced By
+BR-002 One active application per student per cycle	A1 + A2, Student.hasActiveApplication(cycle), Application.isActive()
+BR-003 Applications only inside the window	A2, AllocationCycle.isWindowOpen()
+BR-004 Allocation only after the window closes	A6, AllocationRun.checkReadiness() (cycle status = Closed)
+BR-005 Never allocate beyond capacity	C2 (Room 1 – 1..* Bed), A5 (Bed has at most one Allocation)
+BR-006 One active allocation per student	A4 (Student 1 – 0..1 Allocation)
+BR-007 Room change needs warden approval	A11 + HostelWarden.approveRequest(); RoomChangeRequest is Pending until decided
+BR-008 Occupancy updated immediately	Allocation.reallocate() calls Bed.markVacant() / Bed.markOccupied() in one operation
+ 
+Informal constraints attached to the diagram:
+·        { at most one Application with status Submitted per (Student, AllocationCycle) } (BR-002)
+·        { for every Room: count(Bed with occupancyStatus = Occupied) ≤ bedCapacity } (BR-005)
+·        { a Student has at most one RoomChangeRequest with requestStatus = Pending } (AC-02 of US-009) 
+9. Individual Contribution
+Roll Number	Student	Contribution
+24UCS012	Yajas	Part 1 (Classes): class identification, candidate analysis, class catalogue; class diagram.
+24UCS013	Ninaad Mathur	Part 1 (Classes): class specifications (attributes and operations), traceability from activity steps to classes, status value sets.
+24UCS014	Aryan Sawlani	Part 2 (Object Diagram): UC-011 scenario snapshot, objects and attribute values, links between objects.
+24UCS015	Shaurya Behra	Part 3 (Relationships): generalization, composition, aggregation, associations, dependencies; consistency review across classes, objects and relationships; document compilation and formatting.
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+10. AI Usage Policy — Student Declaration
+AI tools may be used as supporting tools for this assignment. The team is responsible for the correctness, consistency and understanding of all submitted classes, object diagram and relationships.
+·        We have disclosed the use of AI tools, if any.
+·        AI-generated suggestions have been reviewed, verified and adapted by the team.
+·        We understand and can explain the submitted classes, object diagram and relationships.
+·        We have verified that the class model, object diagram and relationships are consistent with our project's requirements, use cases, activity diagrams and scope.
+·        The final submission represents our team's understanding and modeling decisions.
+Field	Details
+AI Tool(s) Used	ChatGPT / Claude
+Purpose of AI Use	Used for drafting/refining descriptive wording and checking consistency between the class, object and relationship tables
+Team ID	T041
+Team Representative	Shaurya Behra
+Date	20 September 2026
+ 
+Team Declaration: We confirm that the information provided above is accurate and that we accept responsibility for the submitted work.
+Team Representative Signature/Confirmation: Shaurya Behra
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+The LNM Institute of Information Technology, Jaipur Software Development Laboratory
+Course Code: CS314 Team ID: T041
+Lab Assignment 5
+Collaboration, State and Component Modelling
+
+1. Introduction
+This document covers Lab Assignment 5 for HostelAlloc, continuing from Assignments 1-4. The same three detailed use cases are used throughout: UC-004 Submit Application, UC-006 Run Allocation and UC-011 Approve/Reject Room-Change Request. All objects, classes and operations used below are drawn from the class catalogue in Assignment 4.
+2. Selected Use Cases
+Use Case	Primary Actor	Main Outcome
+UC-004 Submit Application	Student	One valid application exists for the current cycle
+UC-006 Run Allocation	Hostel Administration Office	Allocation results stored as Pending Verification
+UC-011 Approve/Reject Room-Change Request	Hostel Warden	Request reaches Approved or Rejected; occupancy stays consistent
+3. Collaboration Diagram — UC-004 Submit Application
+The Student submits an application; Application checks the cycle window, the student's eligibility and duplicate status, validates the submitted details, and finally asks NotificationService to confirm submission.
+ 
+No.	Link / Object	Message or responsibility
+1	Student -> Application	submitApplication(cycle, details)
+1.1	Application -> AllocationCycle	isWindowOpen() (BR-003)
+1.2	Application -> Student	isEligible(cycle) / hasActiveApplication(cycle) (BR-002)
+1.3	Application (self)	validate() submitted details
+1.4	Application -> NotificationService	sendNotification(student, confirmation) (FR-031)
+4. Collaboration Diagram — UC-006 Run Allocation
+The Hostel Administration Office officer initiates a run; AllocationRun checks readiness against the cycle and criteria, delegates matching to AllocationEngine, which reads applications and vacant beds and creates proposed Allocation objects; the officer then reviews and confirms the run.
+ 
+No.	Link / Object	Message or responsibility
+1	HostelAdminOfficer -> AllocationRun	initiateAllocationRun(cycle)
+1.1	AllocationRun -> AllocationCycle	checkReadiness() — window closed? (BR-004)
+1.2	AllocationRun -> AllocationCriteria	checkReadiness() — criteria.isComplete()
+1.3	AllocationRun -> AllocationEngine	execute() — delegate matching
+1.3.1	AllocationEngine -> Application	read valid applications for the cycle
+1.3.2	AllocationEngine -> Hostel	getVacantBeds() across inventory
+1.3.3	AllocationEngine -> Allocation	<<create>> generateProposals() / flag unallocated applications
+2	HostelAdminOfficer -> AllocationRun	reviewResults() / confirmRun()
+2.1	AllocationRun -> Allocation	storePendingVerification() (markPendingVerification())
+5. Collaboration Diagram — UC-011 Approve/Reject Room-Change Request
+The Hostel Warden opens a pending request; RoomChangeRequest is checked against the student's current Allocation and the requested Room. On approval, the allocation is re-pointed to the new bed and both beds' occupancy are updated together (BR-008); either way the student is notified of the decision.
+ 
+No.	Link / Object	Message or responsibility
+1	HostelWarden -> RoomChangeRequest	openRequest(request)
+1.1	RoomChangeRequest -> Allocation	concerns — read the student's current allocation
+1.2	RoomChangeRequest -> Room	requestedRoom — hasVacancy()
+2	HostelWarden -> RoomChangeRequest	approveRequest(bed) [bed available] / rejectRequest(reason) [else] (FR-023/FR-024)
+2.1	RoomChangeRequest -> Allocation	reallocate(newBed) [only if approved]
+2.1.1	Allocation -> oldBed : Bed	markVacant()
+2.1.2	Allocation -> newBed : Bed	markOccupied() (BR-008)
+3	RoomChangeRequest -> NotificationService	sendNotification(student, decision)
+3.1	NotificationService -> Student	receiveNotification()
+
+ 
+6. State Diagram — Application
+Scope note: this diagram covers only the states Application passes through within UC-004 and UC-006. Draft and Withdrawn (also listed as possible Application.status values in Assignment 4, Section 8) belong to the Save-Draft and Withdraw-Application flows (FR-012, FR-015), which are outside the three use cases selected for this assignment and are therefore not modelled here.
+ 
+State / Transition	Event, guard or action
+Before creation	Form opened; no stored Application yet
+Submitted	valid submit [window open, eligible student, no duplicate] (BR-002, BR-003)
+Allocated	allocation run confirmed [bed assigned]
+Unallocated	allocation run confirmed [no bed available]
+Final	cycle archived; an invalid form submission creates no record at all
+7. State Diagram — RoomChangeRequest
+The request stays Pending until the warden records a decision. A review deadline passing on its own does not approve or reject the request; it simply remains Pending (escalation optional, per the UC-011 alternative flow).
+ 
+State / Transition	Event, guard or action
+Pending	Student submits a room-change request (FR-021)
+Pending -> Pending	warden selects an alternative room [approve, requested bed unavailable] / review deadline passes [no decision yet]
+Pending -> Approved	warden approves and the requested bed is available (FR-023)
+Pending -> Rejected	warden rejects and records a reason (FR-024)
+Final	decision recorded; student notified (FR-033)
+
+ 
+8. Component Diagram
+The web interface uses three use-case modules, each reached through its own interface. Authentication and role checks (shared across all use cases, FR-001-FR-005) sit in the Web UI layer and are not re-drawn per module. The Inventory Module is the single point of access to Hostel/Room/Bed data; NotificationService is the single point of access for messages to students and staff, and depends on an external gateway for actual delivery.
+ 
+Interface / Service	Used by	Purpose
+IApplication	Web UI, Application Module	Submit and validate applications (UC-004)
+IAllocationRun	Web UI, Allocation Run Module	Start, check readiness and confirm a run (UC-006)
+IRoomChange	Web UI, Room Change Module	Review and decide a room-change request (UC-011)
+Inventory Module + Database	Allocation Engine, Room Change Module	Vacant beds, room/hostel data, allocation and occupancy records
+Notification Service	Application, Allocation Run and Room Change Modules	Create notifications and dispatch them via the external gateway
+9. Individual Contribution
+Roll Number	Student	Contribution
+24UCS012	Yajas	UC-004 collaboration model; Application state model; checked against Student and Application classes
+24UCS013	Ninaad Mathur	UC-006 collaboration model; checked operations, criteria and AllocationRun status
+24UCS014	Aryan Sawlani	UC-011 collaboration model; RoomChangeRequest state model and object links
+24UCS015	Shaurya Behra	Component model; consistency review across diagrams; document compilation and formatting
+10. AI Usage Policy — Student Declaration
+AI tools may be used as supporting tools for this assignment. The team is responsible for the correctness, consistency and understanding of all submitted models.
+●       AI-generated suggestions must be reviewed, verified and adapted by the team.
+●       The team should be able to explain the collaboration, state and component models.
+●       The final submission should reflect the team's modelling decisions.
+Field	Details
+AI Tool(s) Used	ChatGPT / Claude
+Purpose of AI Use	Drafting/refining descriptive wording; regenerating the collaboration, state and component diagrams so their numbering and object names match the Assignment 4 class model and the message-summary tables
+Team ID	T041
+Team Representative	Shaurya Behra
+Date	29 September 2026
+Team Declaration: We confirm that the information provided above is accurate and that we accept responsibility for the submitted work.
+Team Representative Signature/Confirmation: Shaurya Behra
+
