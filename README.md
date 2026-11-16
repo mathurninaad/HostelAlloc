@@ -34,13 +34,15 @@ New students can also register from the login page.
 
 ## How the flow works
 
-1. Students login and submit the application while the window is open.
-2. Hostel office sets the allocation criteria and closes the window.
+1. Students login, pick year, category and preferred hostel, and save a draft or submit the application while the window is open.
+2. Hostel office sets the allocation criteria (year order, priority category, hostel preference) and closes the window.
 3. Hostel office runs the allocation. Results are saved as Pending Verification.
 4. Wardens verify the allocations of their hostel.
 5. Hostel office publishes the results and students get a notification.
 6. Students can ask for a room change, wardens approve or reject it.
 7. At the end of the stay the checkout is confirmed by the warden and the bed becomes vacant.
+
+Hostel office can also make hostels and rooms Active or Inactive and edit room number and floor. Wardens, office and institute admin can see the Inventory page.
 
 ## Tests
 

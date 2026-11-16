@@ -14,7 +14,7 @@
         <p>The application window is closed.</p>
     {% elif status == "checked out" %}
         <p>You have checked out of the hostel.</p>
-    {% elif application and application.status != "submitted" %}
+    {% elif application and application.status not in ["draft", "submitted"] %}
         <p>Your application is already processed.</p>
     {% else %}
         <form method="post" action="/student/apply">
@@ -25,6 +25,13 @@
                 <option value="{{ y }}" {% if application and application.year == y %}selected{% endif %}>{{ y }}</option>
                 {% endfor %}
             </select>
+            <label>Category</label>
+            <select name="category">
+                <option value="">-- select --</option>
+                {% for c in categories %}
+                <option value="{{ c }}" {% if application and application.category == c %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+            </select>
             <label>Preferred hostel</label>
             <select name="hostel_id">
                 <option value="">No preference</option>
@@ -33,9 +40,10 @@
                 {% endfor %}
             </select>
             <br>
-            <button type="submit">
-                {% if application %}Update application{% else %}Submit application{% endif %}
+            <button type="submit" name="action" value="submit">
+                {% if application and application.status == "submitted" %}Update application{% else %}Submit application{% endif %}
             </button>
+            <button type="submit" name="action" value="draft">Save draft</button>
         </form>
     {% endif %}
 {% endif %}

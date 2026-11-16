@@ -4,7 +4,7 @@ from database import get_db
 from models import Application, Allocation, Hostel, Room, RoomChange, Checkout, Notification
 from helpers import (
     render, go, flash, login_required, notify, current_cycle, window_open,
-    active_allocation, bed_text,
+    active_allocation, bed_text, CATEGORIES, eligibility_problem,
 )
 
 router = APIRouter(prefix="/student")
@@ -56,10 +56,10 @@ def home(request: Request, user=Depends(student_only), db: Session = Depends(get
 def apply_page(request: Request, user=Depends(student_only), db: Session = Depends(get_db)):
     cycle = current_cycle(db)
     application = get_application(db, user.id, cycle)
-    hostels = db.query(Hostel).all()
+    hostels = db.query(Hostel).filter_by(status="Active").all()
     return render(
         request, "apply.html", user=user, cycle=cycle, application=application,
-        hostels=hostels, is_open=window_open(cycle),
+        hostels=hostels, categories=CATEGORIES, is_open=window_open(cycle),
         status=shown_status(db, application, cycle),
     )
 
@@ -68,7 +68,9 @@ def apply_page(request: Request, user=Depends(student_only), db: Session = Depen
 def apply(
     request: Request,
     year: str = Form(""),
+    category: str = Form(""),
     hostel_id: str = Form(""),
+    action: str = Form("submit"),
     user=Depends(student_only),
     db: Session = Depends(get_db),
 ):
@@ -76,27 +78,37 @@ def apply(
     if not window_open(cycle):
         flash(request, "Applications are not open right now")
         return go("/student/apply")
-    if active_allocation(db, user.id):
-        flash(request, "You already have a room allocated")
+    problem = eligibility_problem(db, user)
+    if problem:
+        flash(request, problem)
         return go("/student/apply")
     application = get_application(db, user.id, cycle)
-    if application and application.status != "submitted":
+    if application and application.status not in ("draft", "submitted"):
         flash(request, "Your application is already processed")
         return go("/student/apply")
-    if not year:
-        flash(request, "Please select your year of study")
+    if year and (not year.isdigit() or not 1 <= int(year) <= 4):
+        flash(request, "Year of study must be between 1 and 4")
+        return go("/student/apply")
+    if category and category not in CATEGORIES:
+        flash(request, "Choose a valid category")
+        return go("/student/apply")
+    if action == "submit" and (not year or not category):
+        flash(request, "Please select your year and category before submitting")
         return go("/student/apply")
 
     if application is None:
         application = Application(user_id=user.id, cycle_id=cycle.id)
         db.add(application)
+    application.year = int(year) if year else None
+    application.category = category or None
+    application.hostel_id = int(hostel_id) if hostel_id else None
+    if action == "draft":
+        application.status = "draft"
+        flash(request, "Draft saved, you can submit it later")
+    else:
+        application.status = "submitted"
         notify(db, user.id, "Your hostel application has been submitted")
         flash(request, "Application submitted")
-    else:
-        flash(request, "Application updated")
-    application.year = int(year)
-    application.hostel_id = int(hostel_id) if hostel_id else None
-    application.status = "submitted"
     db.commit()
     return go("/student/apply")
 
@@ -128,7 +140,7 @@ def room_change_page(request: Request, user=Depends(student_only), db: Session =
     if allocation is None or allocation.status != "Published":
         flash(request, "You need an allocated room to request a change")
         return go("/student")
-    rooms = [r for r in db.query(Room).all() if r.free_count() > 0 and r.id != allocation.bed.room_id]
+    rooms = [r for r in db.query(Room).all() if r.is_active() and r.free_count() > 0 and r.id != allocation.bed.room_id]
     requests = db.query(RoomChange).filter_by(user_id=user.id).order_by(RoomChange.id.desc()).all()
     pending = any(r.status == "Pending" for r in requests)
     return render(request, "room_change.html", user=user, rooms=rooms, requests=requests, pending=pending)
@@ -153,7 +165,7 @@ def room_change(
         flash(request, "Please write a reason")
         return go("/student/room-change")
     room = db.get(Room, room_id)
-    if room is None or room.id == allocation.bed.room_id:
+    if room is None or not room.is_active() or room.id == allocation.bed.room_id:
         flash(request, "Choose a different room")
         return go("/student/room-change")
 

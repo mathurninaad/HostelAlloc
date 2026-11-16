@@ -7,6 +7,7 @@ from models import (
 )
 from helpers import (
     render, go, flash, login_required, notify, log, current_cycle, window_open, ACTIVE_STATUSES,
+    CATEGORIES,
 )
 from allocation import run_allocation
 
@@ -30,7 +31,7 @@ def home(request: Request, user=Depends(office_only), db: Session = Depends(get_
     submitted = 0
     if cycle:
         applications = db.query(Application).filter(
-            Application.cycle_id == cycle.id, Application.status != "withdrawn"
+            Application.cycle_id == cycle.id, Application.status.in_(["draft", "submitted", "allocated", "unallocated"])
         ).count()
         submitted = db.query(Application).filter(
             Application.cycle_id == cycle.id, Application.status.in_(["submitted", "allocated", "unallocated"])
@@ -90,6 +91,7 @@ def edit_hostel(
     name: str = Form(...),
     floors: int = Form(1),
     warden_id: str = Form(""),
+    status: str = Form("Active"),
     user=Depends(office_only),
     db: Session = Depends(get_db),
 ):
@@ -98,9 +100,32 @@ def edit_hostel(
     if hostel is None or not name.strip() or floors < 1 or other:
         flash(request, "Could not update the hostel")
         return go("/office/hostels/" + str(hostel_id))
+    if status not in ("Active", "Inactive"):
+        flash(request, "Choose a valid status")
+        return go("/office/hostels/" + str(hostel_id))
+    if status == "Inactive" and hostel.occupied_beds() > 0:
+        flash(request, "Hostel has students living in it, it cannot be made inactive")
+        return go("/office/hostels/" + str(hostel_id))
+    old_warden = hostel.warden_id
+    new_warden = int(warden_id) if warden_id else None
+    old_name = hostel.name
+    changed = old_name != name.strip() or hostel.status != status or hostel.floors != floors
     hostel.name = name.strip()
     hostel.floors = floors
-    hostel.warden_id = int(warden_id) if warden_id else None
+    hostel.status = status
+    hostel.warden_id = new_warden
+    if old_warden != new_warden:
+        if old_warden:
+            notify(db, old_warden, "You are no longer the warden of " + hostel.name)
+        if new_warden:
+            notify(db, new_warden, "You are now the warden of " + hostel.name)
+        changed = True
+    if changed:
+        students = db.query(Allocation).filter(
+            Allocation.status.in_(ACTIVE_STATUSES), Allocation.bed.has(Bed.room.has(Room.hostel_id == hostel.id))
+        ).all()
+        for allocation in students:
+            notify(db, allocation.user_id, "Details of your hostel " + hostel.name + " were updated by the hostel office")
     log(db, user.id, "Edited hostel " + hostel.name)
     db.commit()
     flash(request, "Hostel updated")
@@ -124,6 +149,9 @@ def add_room(
     if hostel is None or not number or capacity < 1 or capacity > 10:
         flash(request, "Enter a room number and a capacity between 1 and 10")
         return go(back)
+    if floor < 0 or floor >= hostel.floors:
+        flash(request, "Floor must be between 0 and " + str(hostel.floors - 1))
+        return go(back)
     if db.query(Room).filter_by(hostel_id=hostel_id, number=number).first():
         flash(request, "This room number already exists in the hostel")
         return go(back)
@@ -144,6 +172,9 @@ def edit_room(
     request: Request,
     capacity: int = Form(...),
     room_type: str = Form("Standard"),
+    number: str = Form(""),
+    floor: int = Form(0),
+    status: str = Form("Active"),
     user=Depends(office_only),
     db: Session = Depends(get_db),
 ):
@@ -155,7 +186,20 @@ def edit_room(
     if capacity < 1 or capacity > 10:
         flash(request, "Capacity must be between 1 and 10")
         return go(back)
+    number = number.strip() or room.number
+    if db.query(Room).filter(Room.hostel_id == room.hostel_id, Room.number == number, Room.id != room.id).first():
+        flash(request, "This room number already exists in the hostel")
+        return go(back)
+    if floor < 0 or floor >= room.hostel.floors:
+        flash(request, "Floor must be between 0 and " + str(room.hostel.floors - 1))
+        return go(back)
+    if status not in ("Active", "Inactive"):
+        flash(request, "Choose a valid status")
+        return go(back)
     occupied = len([b for b in room.beds if b.occupied])
+    if status == "Inactive" and occupied > 0:
+        flash(request, "Room has students living in it, it cannot be made inactive")
+        return go(back)
     if capacity < occupied:
         flash(request, "Room has " + str(occupied) + " students, capacity cannot be less than that")
         return go(back)
@@ -169,6 +213,9 @@ def edit_room(
             db.delete(bed)
     room.capacity = capacity
     room.room_type = room_type
+    room.number = number
+    room.floor = floor
+    room.status = status
 
     bed_ids = [b.id for b in room.beds]
     students = db.query(Allocation).filter(
@@ -187,7 +234,7 @@ def cycle_page(request: Request, user=Depends(office_only), db: Session = Depend
     cycle = current_cycle(db)
     return render(
         request, "cycle.html", user=user, cycle=cycle, criteria=get_criteria(db, cycle),
-        is_open=window_open(cycle), today=date.today(),
+        is_open=window_open(cycle), today=date.today(), categories=CATEGORIES,
     )
 
 
@@ -264,6 +311,7 @@ def close_window(request: Request, user=Depends(office_only), db: Session = Depe
 def save_criteria(
     request: Request,
     year_order: str = Form("senior"),
+    priority_category: str = Form(""),
     use_preference: str = Form(""),
     user=Depends(office_only),
     db: Session = Depends(get_db),
@@ -276,7 +324,11 @@ def save_criteria(
     if criteria is None:
         criteria = Criteria(cycle_id=cycle.id)
         db.add(criteria)
+    if priority_category and priority_category not in CATEGORIES:
+        flash(request, "Choose a valid category")
+        return go("/office/cycle")
     criteria.year_order = year_order
+    criteria.priority_category = priority_category
     criteria.use_preference = use_preference == "yes"
     log(db, user.id, "Saved allocation criteria for " + cycle.name)
     db.commit()

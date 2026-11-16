@@ -21,6 +21,7 @@ class Hostel(Base):
     name = Column(String, unique=True, nullable=False)
     floors = Column(Integer, default=1)
     warden_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    status = Column(String, default="Active")
     warden = relationship("User")
     rooms = relationship("Room", back_populates="hostel", order_by="Room.number")
 
@@ -39,11 +40,15 @@ class Room(Base):
     number = Column(String, nullable=False)
     capacity = Column(Integer, default=1)
     room_type = Column(String, default="Standard")
+    status = Column(String, default="Active")
     hostel = relationship("Hostel", back_populates="rooms")
     beds = relationship("Bed", back_populates="room", order_by="Bed.number")
 
     def free_count(self):
         return sum(1 for bed in self.beds if not bed.occupied)
+
+    def is_active(self):
+        return self.status == "Active" and self.hostel.status == "Active"
 
 
 class Bed(Base):
@@ -70,6 +75,7 @@ class Criteria(Base):
     id = Column(Integer, primary_key=True)
     cycle_id = Column(Integer, ForeignKey("cycles.id"), nullable=False)
     year_order = Column(String, default="senior")
+    priority_category = Column(String, default="")
     use_preference = Column(Boolean, default=True)
 
 
@@ -79,8 +85,9 @@ class Application(Base):
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     cycle_id = Column(Integer, ForeignKey("cycles.id"), nullable=False)
     year = Column(Integer, nullable=True)
+    category = Column(String, nullable=True)
     hostel_id = Column(Integer, ForeignKey("hostels.id"), nullable=True)
-    status = Column(String, default="submitted")
+    status = Column(String, default="draft")
     created_at = Column(DateTime, default=datetime.now)
     user = relationship("User")
     hostel = relationship("Hostel")

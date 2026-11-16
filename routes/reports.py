@@ -33,7 +33,7 @@ def reports(
     if cycle:
         for app in db.query(Application).filter_by(cycle_id=cycle.id).all():
             by_status[app.status] = by_status.get(app.status, 0) + 1
-            if app.status != "withdrawn":
+            if app.status not in ("withdrawn", "draft"):
                 by_year[app.year] = by_year.get(app.year, 0) + 1
 
     changes = db.query(RoomChange).order_by(RoomChange.id.desc()).all()

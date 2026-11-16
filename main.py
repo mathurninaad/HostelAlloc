@@ -6,7 +6,7 @@ from starlette.middleware.sessions import SessionMiddleware
 from database import engine, Base
 import models
 from helpers import templates
-from routes import auth, student, warden, office, admin, reports
+from routes import auth, student, warden, office, admin, reports, inventory
 
 Base.metadata.create_all(bind=engine)
 
@@ -20,6 +20,7 @@ app.include_router(warden.router)
 app.include_router(office.router)
 app.include_router(admin.router)
 app.include_router(reports.router)
+app.include_router(inventory.router)
 
 
 @app.exception_handler(StarletteHTTPException)

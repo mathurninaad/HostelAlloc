@@ -52,7 +52,7 @@ def home(request: Request, user=Depends(warden_only), db: Session = Depends(get_
     applications = 0
     if cycle:
         applications = db.query(Application).filter(
-            Application.cycle_id == cycle.id, Application.status != "withdrawn"
+            Application.cycle_id == cycle.id, Application.status.in_(["submitted", "allocated", "unallocated"])
         ).count()
     return render(
         request, "warden_home.html", user=user, hostels=hostels, to_verify=to_verify,
@@ -66,7 +66,7 @@ def applications(request: Request, user=Depends(warden_only), db: Session = Depe
     items = []
     if cycle:
         items = db.query(Application).filter(
-            Application.cycle_id == cycle.id, Application.status != "withdrawn"
+            Application.cycle_id == cycle.id, Application.status.in_(["submitted", "allocated", "unallocated"])
         ).order_by(Application.id).all()
     ids = my_hostel_ids(db, user)
     return render(request, "warden_applications.html", user=user, items=items, cycle=cycle, ids=ids)

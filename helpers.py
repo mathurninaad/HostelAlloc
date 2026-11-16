@@ -6,11 +6,12 @@ from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from database import get_db
-from models import User, Notification, AuditLog, Cycle, Allocation, Bed, Room
+from models import User, Notification, AuditLog, Cycle, Allocation, Bed, Room, Hostel
 
 templates = Jinja2Templates(directory="templates")
 
 ACTIVE_STATUSES = ["Pending Verification", "Verified", "Published"]
+CATEGORIES = ["General", "OBC", "SC", "ST", "PwD"]
 
 
 def hash_password(password):
@@ -77,8 +78,21 @@ def active_allocation(db, user_id):
     )
 
 
+def eligibility_problem(db, user):
+    if not user.active:
+        return "Your account is not active"
+    if active_allocation(db, user.id):
+        return "You already have a room allocated"
+    return None
+
+
 def find_vacant_bed(db, hostel_id=None, room_id=None):
-    query = db.query(Bed).join(Room, Bed.room_id == Room.id).filter(Bed.occupied == False)
+    query = (
+        db.query(Bed)
+        .join(Room, Bed.room_id == Room.id)
+        .join(Hostel, Room.hostel_id == Hostel.id)
+        .filter(Bed.occupied == False, Room.status == "Active", Hostel.status == "Active")
+    )
     if hostel_id:
         query = query.filter(Room.hostel_id == hostel_id)
     if room_id:

@@ -3,12 +3,13 @@
 <h2>Hostels</h2>
 {% if items %}
 <table>
-    <tr><th>Name</th><th>Floors</th><th>Warden</th><th>Rooms</th><th>Beds</th><th>Occupied</th><th></th></tr>
+    <tr><th>Name</th><th>Floors</th><th>Warden</th><th>Status</th><th>Rooms</th><th>Beds</th><th>Occupied</th><th></th></tr>
     {% for h in items %}
     <tr>
         <td>{{ h.name }}</td>
         <td>{{ h.floors }}</td>
         <td>{% if h.warden %}{{ h.warden.name }}{% else %}-{% endif %}</td>
+        <td>{{ h.status }}</td>
         <td>{{ h.rooms|length }}</td>
         <td>{{ h.total_beds() }}</td>
         <td>{{ h.occupied_beds() }}</td>

@@ -22,18 +22,22 @@
             {{ nav("/warden/allocations", "Allocations") }}
             {{ nav("/warden/changes", "Room Changes") }}
             {{ nav("/warden/checkouts", "Checkouts") }}
+            {{ nav("/inventory", "Inventory") }}
             {{ nav("/reports", "Reports") }}
         {% elif user.role == "office" %}
             {{ nav("/office", "Home") }}
             {{ nav("/office/hostels", "Hostels") }}
             {{ nav("/office/cycle", "Cycle") }}
             {{ nav("/office/allocation", "Allocation") }}
+            {{ nav("/inventory", "Inventory") }}
             {{ nav("/reports", "Reports") }}
         {% elif user.role == "institute" %}
+            {{ nav("/inventory", "Inventory") }}
             {{ nav("/reports", "Reports") }}
         {% elif user.role == "sysadmin" %}
             {{ nav("/admin/users", "Users") }}
             {{ nav("/admin/audit", "Audit Log") }}
+            {{ nav("/inventory", "Inventory") }}
             {{ nav("/reports", "Reports") }}
         {% endif %}
         <span class="right">

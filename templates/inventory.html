@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Hostel Inventory</h2>
+<form method="get" action="/inventory">
+    <label>Hostel</label>
+    <select name="hostel_id">
+        <option value="">All hostels</option>
+        {% for h in hostels %}
+        <option value="{{ h.id }}" {% if hostel_id == h.id|string %}selected{% endif %}>{{ h.name }}</option>
+        {% endfor %}
+    </select>
+    <label>Show</label>
+    <select name="status">
+        <option value="">All rooms</option>
+        {% for s in ["Vacant", "Full", "Active", "Inactive"] %}
+        <option value="{{ s }}" {% if status == s %}selected{% endif %}>{{ s }}</option>
+        {% endfor %}
+    </select>
+    <br>
+    <button type="submit">Filter</button>
+</form>
+{% if rooms %}
+<table>
+    <tr><th>Hostel</th><th>Room</th><th>Floor</th><th>Type</th><th>Beds</th><th>Occupied</th><th>Vacant</th><th>Status</th></tr>
+    {% for r in rooms %}
+    <tr>
+        <td>{{ r.hostel.name }}</td>
+        <td>{{ r.number }}</td>
+        <td>{{ r.floor }}</td>
+        <td>{{ r.room_type }}</td>
+        <td>{{ r.beds|length }}</td>
+        <td>{{ r.beds|length - r.free_count() }}</td>
+        <td>{{ r.free_count() }}</td>
+        <td>{{ r.status }}{% if r.hostel.status == "Inactive" %} (hostel inactive){% endif %}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No rooms found.</p>
+{% endif %}
+{% endblock %}
