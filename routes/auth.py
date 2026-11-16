@@ -60,6 +60,9 @@ def register(
     db: Session = Depends(get_db),
 ):
     email = email.strip().lower()
+    if not email.endswith("@lnmiit.ac.in"):
+        flash(request, "Only @lnmiit.ac.in emails can register")
+        return go("/register")
     if len(password) < 6:
         flash(request, "Password must have at least 6 characters")
         return go("/register")

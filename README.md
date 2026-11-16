@@ -30,7 +30,7 @@ Then open http://127.0.0.1:8000
 | Institute admin | institute@lnmiit.ac.in |
 | System admin | admin@lnmiit.ac.in |
 
-New students can also register from the login page.
+New students can also register from the login page, but only with an @lnmiit.ac.in email.
 
 ## How the flow works
 

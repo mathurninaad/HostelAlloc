@@ -209,3 +209,11 @@ def test_inventory_and_hostel_status():
     db.close()
     r = office.post("/office/hostels/" + str(hostel_id) + "/edit", data={"name": "Test Hostel", "floors": 1, "status": "Inactive"})
     assert "students living" in r.text
+
+
+def test_register_only_college_email():
+    client = TestClient(app)
+    r = client.post("/register", data={"name": "X", "email": "x@gmail.com", "password": "abcdef"})
+    assert "Only @lnmiit.ac.in emails can register" in r.text
+    r = client.post("/register", data={"name": "X", "email": "x@lnmiit.ac.in", "password": "abcdef"})
+    assert "Account created" in r.text
