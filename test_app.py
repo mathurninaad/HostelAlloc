@@ -70,18 +70,18 @@ def test_full_flow():
     office = login("office@t.com")
     warden = login("warden@t.com")
 
-    r = s1.post("/student/apply", data={"year": "", "category": "General"})
-    assert "select your year and category" in r.text
+    r = s1.post("/student/apply", data={"year": ""})
+    assert "select your year" in r.text
 
-    r = s1.post("/student/apply", data={"year": "3", "category": "General", "action": "draft"})
+    r = s1.post("/student/apply", data={"year": "3", "action": "draft"})
     assert "Draft saved" in r.text
     db = SessionLocal()
     assert db.query(Application).filter_by(status="draft").count() == 1
     db.close()
 
-    s1.post("/student/apply", data={"year": "3", "category": "General"})
-    s2.post("/student/apply", data={"year": "2", "category": "General"})
-    r = s3.post("/student/apply", data={"year": "1", "category": "General"})
+    s1.post("/student/apply", data={"year": "3"})
+    s2.post("/student/apply", data={"year": "2"})
+    r = s3.post("/student/apply", data={"year": "1"})
     assert "Application submitted" in r.text
 
     r = office.post("/office/allocation/run")
@@ -96,7 +96,7 @@ def test_full_flow():
     assert "Dates updated" in r.text
 
     office.post("/office/cycle/close")
-    r = s1.post("/student/apply", data={"year": "3", "category": "General"})
+    r = s1.post("/student/apply", data={"year": "3"})
     assert "not open" in r.text
 
     r = office.post("/office/allocation/run")
@@ -197,42 +197,15 @@ def test_reports_and_audit():
     assert student.get("/reports").status_code == 403
 
 
-def test_priority_category_hostel_status_and_inventory():
-    s1 = login("s1@t.com")
-    s2 = login("s2@t.com")
+def test_inventory_and_hostel_status():
     office = login("office@t.com")
-
-    db = SessionLocal()
-    db.query(Allocation).update({"status": "Cancelled"})
-    db.query(Bed).update({"occupied": False})
-    hostel_id = db.query(Hostel).first().id
-    db.commit()
-    db.close()
-
     assert "Hostel Inventory" in office.get("/inventory").text
     assert "Hostel Inventory" in login("warden@t.com").get("/inventory").text
     assert login("s3@t.com").get("/inventory").status_code == 403
-
-    r = office.post("/office/cycle/new", data={"name": "Second", "start_date": str(date.today()), "end_date": str(date.today())})
-    assert "New cycle created" in r.text
-    s1.post("/student/apply", data={"year": "4", "category": "General"})
-    s2.post("/student/apply", data={"year": "1", "category": "PwD"})
-
     db = SessionLocal()
-    beds = db.query(Bed).all()
-    for bed in beds[1:]:
-        bed.occupied = True
+    hostel_id = db.query(Hostel).first().id
+    db.query(Bed).first().occupied = True
     db.commit()
     db.close()
-
-    office.post("/office/cycle/close")
-    office.post("/office/criteria", data={"year_order": "senior", "priority_category": "PwD", "use_preference": "no"})
-    r = office.post("/office/allocation/run")
-    assert "1 students allocated" in r.text
-    db = SessionLocal()
-    allocation = db.query(Allocation).order_by(Allocation.id.desc()).first()
-    assert allocation.user.name == "S2"
-    db.close()
-
     r = office.post("/office/hostels/" + str(hostel_id) + "/edit", data={"name": "Test Hostel", "floors": 1, "status": "Inactive"})
     assert "students living" in r.text

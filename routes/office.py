@@ -7,7 +7,6 @@ from models import (
 )
 from helpers import (
     render, go, flash, login_required, notify, log, current_cycle, window_open, ACTIVE_STATUSES,
-    CATEGORIES,
 )
 from allocation import run_allocation
 
@@ -234,7 +233,7 @@ def cycle_page(request: Request, user=Depends(office_only), db: Session = Depend
     cycle = current_cycle(db)
     return render(
         request, "cycle.html", user=user, cycle=cycle, criteria=get_criteria(db, cycle),
-        is_open=window_open(cycle), today=date.today(), categories=CATEGORIES,
+        is_open=window_open(cycle), today=date.today(),
     )
 
 
@@ -311,7 +310,6 @@ def close_window(request: Request, user=Depends(office_only), db: Session = Depe
 def save_criteria(
     request: Request,
     year_order: str = Form("senior"),
-    priority_category: str = Form(""),
     use_preference: str = Form(""),
     user=Depends(office_only),
     db: Session = Depends(get_db),
@@ -324,11 +322,7 @@ def save_criteria(
     if criteria is None:
         criteria = Criteria(cycle_id=cycle.id)
         db.add(criteria)
-    if priority_category and priority_category not in CATEGORIES:
-        flash(request, "Choose a valid category")
-        return go("/office/cycle")
     criteria.year_order = year_order
-    criteria.priority_category = priority_category
     criteria.use_preference = use_preference == "yes"
     log(db, user.id, "Saved allocation criteria for " + cycle.name)
     db.commit()

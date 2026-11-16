@@ -7,15 +7,11 @@ def run_allocation(db, cycle, criteria):
     applications = db.query(Application).filter_by(cycle_id=cycle.id, status="submitted").all()
 
     def sort_key(app):
-        if criteria.priority_category and app.category == criteria.priority_category:
-            first = 0
-        else:
-            first = 1
         if criteria.year_order == "senior":
             year = -app.year
         else:
             year = app.year
-        return (first, year, app.created_at)
+        return (year, app.created_at)
 
     applications.sort(key=sort_key)
 

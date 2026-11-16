@@ -4,7 +4,7 @@ from database import get_db
 from models import Application, Allocation, Hostel, Room, RoomChange, Checkout, Notification
 from helpers import (
     render, go, flash, login_required, notify, current_cycle, window_open,
-    active_allocation, bed_text, CATEGORIES, eligibility_problem,
+    active_allocation, bed_text, eligibility_problem,
 )
 
 router = APIRouter(prefix="/student")
@@ -59,7 +59,7 @@ def apply_page(request: Request, user=Depends(student_only), db: Session = Depen
     hostels = db.query(Hostel).filter_by(status="Active").all()
     return render(
         request, "apply.html", user=user, cycle=cycle, application=application,
-        hostels=hostels, categories=CATEGORIES, is_open=window_open(cycle),
+        hostels=hostels, is_open=window_open(cycle),
         status=shown_status(db, application, cycle),
     )
 
@@ -68,7 +68,6 @@ def apply_page(request: Request, user=Depends(student_only), db: Session = Depen
 def apply(
     request: Request,
     year: str = Form(""),
-    category: str = Form(""),
     hostel_id: str = Form(""),
     action: str = Form("submit"),
     user=Depends(student_only),
@@ -89,18 +88,14 @@ def apply(
     if year and (not year.isdigit() or not 1 <= int(year) <= 4):
         flash(request, "Year of study must be between 1 and 4")
         return go("/student/apply")
-    if category and category not in CATEGORIES:
-        flash(request, "Choose a valid category")
-        return go("/student/apply")
-    if action == "submit" and (not year or not category):
-        flash(request, "Please select your year and category before submitting")
+    if action == "submit" and not year:
+        flash(request, "Please select your year before submitting")
         return go("/student/apply")
 
     if application is None:
         application = Application(user_id=user.id, cycle_id=cycle.id)
         db.add(application)
     application.year = int(year) if year else None
-    application.category = category or None
     application.hostel_id = int(hostel_id) if hostel_id else None
     if action == "draft":
         application.status = "draft"

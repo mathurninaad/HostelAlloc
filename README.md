@@ -34,8 +34,8 @@ New students can also register from the login page.
 
 ## How the flow works
 
-1. Students login, pick year, category and preferred hostel, and save a draft or submit the application while the window is open.
-2. Hostel office sets the allocation criteria (year order, priority category, hostel preference) and closes the window.
+1. Students login, pick year and preferred hostel, and save a draft or submit the application while the window is open.
+2. Hostel office sets the allocation criteria (year order, hostel preference) and closes the window.
 3. Hostel office runs the allocation. Results are saved as Pending Verification.
 4. Wardens verify the allocations of their hostel.
 5. Hostel office publishes the results and students get a notification.

@@ -25,13 +25,6 @@
                 <option value="{{ y }}" {% if application and application.year == y %}selected{% endif %}>{{ y }}</option>
                 {% endfor %}
             </select>
-            <label>Category</label>
-            <select name="category">
-                <option value="">-- select --</option>
-                {% for c in categories %}
-                <option value="{{ c }}" {% if application and application.category == c %}selected{% endif %}>{{ c }}</option>
-                {% endfor %}
-            </select>
             <label>Preferred hostel</label>
             <select name="hostel_id">
                 <option value="">No preference</option>

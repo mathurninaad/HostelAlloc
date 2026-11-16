@@ -11,7 +11,6 @@ from models import User, Notification, AuditLog, Cycle, Allocation, Bed, Room, H
 templates = Jinja2Templates(directory="templates")
 
 ACTIVE_STATUSES = ["Pending Verification", "Verified", "Published"]
-CATEGORIES = ["General", "OBC", "SC", "ST", "PwD"]
 
 
 def hash_password(password):
