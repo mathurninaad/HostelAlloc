@@ -15,7 +15,7 @@
         <label>Give room</label>
         <select name="room_id">
             {% for r in rooms %}
-            <option value="{{ r.id }}" {% if r.id == c.requested_room_id %}selected{% endif %}>
+            <option value="{{ r.id }}" {% if r.id == c.requested_room.id %}selected{% endif %}>
                 {{ r.hostel.name }}, Room {{ r.number }} ({{ r.free_count() }} free)
             </option>
             {% endfor %}

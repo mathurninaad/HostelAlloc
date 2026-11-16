@@ -1,17 +1,10 @@
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
+from mongoengine import connect
 
-DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:///hostelalloc.db")
+MONGO_URL = os.environ.get("MONGO_URL", "mongodb://localhost:27017/hostelalloc")
 
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(bind=engine, autoflush=False)
-Base = declarative_base()
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+if MONGO_URL.startswith("mongomock"):
+    import mongomock
+    connect("hostelalloc_test", host="mongodb://localhost", mongo_client_class=mongomock.MongoClient)
+else:
+    connect(host=MONGO_URL)

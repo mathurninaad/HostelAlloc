@@ -1,6 +1,4 @@
 from fastapi import APIRouter, Depends, Request
-from sqlalchemy.orm import Session
-from database import get_db
 from models import Hostel, Application, RoomChange
 from helpers import render, login_required, current_cycle
 
@@ -11,12 +9,11 @@ router = APIRouter()
 def reports(
     request: Request,
     user=Depends(login_required("warden", "office", "institute", "sysadmin")),
-    db: Session = Depends(get_db),
 ):
-    query = db.query(Hostel)
     if user.role == "warden":
-        query = query.filter(Hostel.warden_id == user.id)
-    hostels = query.all()
+        hostels = list(Hostel.objects(warden=user))
+    else:
+        hostels = list(Hostel.objects)
     ids = [h.id for h in hostels]
 
     occupancy = []
@@ -27,18 +24,18 @@ def reports(
         occupancy.append({"name": h.name, "rooms": len(h.rooms), "total": total, "used": used,
                           "vacant": total - used, "percent": percent})
 
-    cycle = current_cycle(db)
+    cycle = current_cycle()
     by_status = {}
     by_year = {}
     if cycle:
-        for app in db.query(Application).filter_by(cycle_id=cycle.id).all():
+        for app in Application.objects(cycle=cycle):
             by_status[app.status] = by_status.get(app.status, 0) + 1
             if app.status not in ("withdrawn", "draft"):
                 by_year[app.year] = by_year.get(app.year, 0) + 1
 
-    changes = db.query(RoomChange).order_by(RoomChange.id.desc()).all()
+    changes = list(RoomChange.objects.order_by("-id"))
     if user.role == "warden":
-        changes = [c for c in changes if c.requested_room.hostel_id in ids or c.allocation.bed.room.hostel_id in ids]
+        changes = [c for c in changes if c.requested_room.hostel.id in ids or c.allocation.bed.room.hostel.id in ids]
     change_counts = {}
     for c in changes:
         change_counts[c.status] = change_counts.get(c.status, 0) + 1

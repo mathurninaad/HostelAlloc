@@ -29,7 +29,7 @@
             <select name="hostel_id">
                 <option value="">No preference</option>
                 {% for h in hostels %}
-                <option value="{{ h.id }}" {% if application and application.hostel_id == h.id %}selected{% endif %}>{{ h.name }}</option>
+                <option value="{{ h.id }}" {% if application and application.hostel and application.hostel.id == h.id %}selected{% endif %}>{{ h.name }}</option>
                 {% endfor %}
             </select>
             <br>

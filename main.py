@@ -3,12 +3,10 @@ from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from starlette.middleware.sessions import SessionMiddleware
-from database import engine, Base
+import database
 import models
 from helpers import templates
 from routes import auth, student, warden, office, admin, reports, inventory
-
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="HostelAlloc")
 app.add_middleware(SessionMiddleware, secret_key="hostelalloc-secret-key")

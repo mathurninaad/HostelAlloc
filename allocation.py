@@ -1,10 +1,9 @@
-from models import Application
+from models import Application, Allocation
 from helpers import find_vacant_bed
-from models import Allocation
 
 
-def run_allocation(db, cycle, criteria):
-    applications = db.query(Application).filter_by(cycle_id=cycle.id, status="submitted").all()
+def run_allocation(cycle, criteria):
+    applications = list(Application.objects(cycle=cycle, status="submitted"))
 
     def sort_key(app):
         if criteria.year_order == "senior":
@@ -19,17 +18,19 @@ def run_allocation(db, cycle, criteria):
     unallocated = 0
     for app in applications:
         bed = None
-        if criteria.use_preference and app.hostel_id:
-            bed = find_vacant_bed(db, hostel_id=app.hostel_id)
+        if criteria.use_preference and app.hostel:
+            bed = find_vacant_bed(hostel=app.hostel)
         if bed is None:
-            bed = find_vacant_bed(db)
+            bed = find_vacant_bed()
         if bed is None:
             app.status = "unallocated"
+            app.save()
             unallocated += 1
             continue
         bed.occupied = True
+        bed.save()
+        Allocation(application=app, user=app.user, cycle=cycle, bed=bed).save()
         app.status = "allocated"
-        db.add(Allocation(application_id=app.id, user_id=app.user_id, cycle_id=cycle.id, bed_id=bed.id))
-        db.flush()
+        app.save()
         allocated += 1
     return allocated, unallocated

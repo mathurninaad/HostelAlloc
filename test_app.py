@@ -1,13 +1,10 @@
 import os
-import tempfile
 from datetime import date, timedelta
 
-db_file = os.path.join(tempfile.mkdtemp(), "test.db")
-os.environ["DATABASE_URL"] = "sqlite:///" + db_file
+os.environ["MONGO_URL"] = "mongomock://localhost/hostelalloc_test"
 
 from fastapi.testclient import TestClient
-from database import SessionLocal, engine, Base
-from models import User, Hostel, Room, Bed, Cycle, Allocation, Application
+from models import User, Hostel, Room, Bed, Cycle, Allocation, Application, RoomChange, Checkout
 from helpers import hash_password
 from main import app
 
@@ -19,8 +16,6 @@ def login(email):
 
 
 def setup_module():
-    Base.metadata.create_all(bind=engine)
-    db = SessionLocal()
     for name, email, role in [
         ("Office", "office@t.com", "office"),
         ("Warden", "warden@t.com", "warden"),
@@ -29,20 +24,15 @@ def setup_module():
         ("S2", "s2@t.com", "student"),
         ("S3", "s3@t.com", "student"),
     ]:
-        db.add(User(name=name, email=email, password=hash_password("pass123"), role=role))
-    db.commit()
-    warden = db.query(User).filter_by(email="warden@t.com").first()
-    hostel = Hostel(name="Test Hostel", floors=1, warden_id=warden.id)
-    db.add(hostel)
-    db.flush()
-    room = Room(hostel_id=hostel.id, floor=1, number="101", capacity=2)
-    db.add(room)
-    db.flush()
-    db.add(Bed(room_id=room.id, number=1))
-    db.add(Bed(room_id=room.id, number=2))
-    db.add(Cycle(name="Test", start_date=date.today(), end_date=date.today() + timedelta(days=5)))
-    db.commit()
-    db.close()
+        User(name=name, email=email, password=hash_password("pass123"), role=role).save()
+    warden = User.objects(email="warden@t.com").first()
+    hostel = Hostel(name="Test Hostel", floors=2, warden=warden)
+    hostel.save()
+    room = Room(hostel=hostel, floor=1, number="101", capacity=2)
+    room.save()
+    Bed(room=room, number=1).save()
+    Bed(room=room, number=2).save()
+    Cycle(name="Test", start_date=date.today(), end_date=date.today() + timedelta(days=5)).save()
 
 
 def test_wrong_password():
@@ -75,9 +65,7 @@ def test_full_flow():
 
     r = s1.post("/student/apply", data={"year": "3", "action": "draft"})
     assert "Draft saved" in r.text
-    db = SessionLocal()
-    assert db.query(Application).filter_by(status="draft").count() == 1
-    db.close()
+    assert Application.objects(status="draft").count() == 1
 
     s1.post("/student/apply", data={"year": "3"})
     s2.post("/student/apply", data={"year": "2"})
@@ -106,12 +94,10 @@ def test_full_flow():
     r = office.post("/office/allocation/run")
     assert "2 students allocated, 1 could not be allocated" in r.text
 
-    db = SessionLocal()
-    assert db.query(Allocation).count() == 2
-    assert db.query(Bed).filter_by(occupied=True).count() == 2
-    names = [a.user.name for a in db.query(Allocation).all()]
+    assert Allocation.objects.count() == 2
+    assert Bed.objects(occupied=True).count() == 2
+    names = [a.user.name for a in Allocation.objects.order_by("id")]
     assert names == ["S1", "S2"]
-    db.close()
 
     r = office.post("/office/allocation/publish")
     assert "have not verified" in r.text
@@ -128,15 +114,11 @@ def test_full_flow():
     r = s3.get("/notifications")
     assert "no room could be allocated" in r.text
 
-    db = SessionLocal()
-    hostel = db.query(Hostel).first()
-    room = Room(hostel_id=hostel.id, floor=1, number="102", capacity=1)
-    db.add(room)
-    db.flush()
-    db.add(Bed(room_id=room.id, number=1))
-    db.commit()
-    new_room_id = room.id
-    db.close()
+    hostel = Hostel.objects.first()
+    room = Room(hostel=hostel, floor=1, number="102", capacity=1)
+    room.save()
+    Bed(room=room, number=1).save()
+    new_room_id = str(room.id)
 
     r = s1.post("/student/room-change", data={"room_id": new_room_id, "reason": ""})
     assert "write a reason" in r.text
@@ -145,45 +127,35 @@ def test_full_flow():
     r = s1.post("/student/room-change", data={"room_id": new_room_id, "reason": "Again"})
     assert "pending request" in r.text
 
-    r = warden.post("/warden/changes/1/reject", data={"note": ""})
+    r = warden.post("/warden/changes/" + str(RoomChange.objects.first().id) + "/reject", data={"note": ""})
     assert "reason for rejecting" in r.text
-    r = warden.post("/warden/changes/1/approve", data={"room_id": new_room_id})
+    r = warden.post("/warden/changes/" + str(RoomChange.objects.first().id) + "/approve", data={"room_id": new_room_id})
     assert "Request approved" in r.text
 
-    db = SessionLocal()
-    allocation = db.query(Allocation).filter_by(user_id=db.query(User).filter_by(email="s1@t.com").first().id).first()
+    allocation = Allocation.objects(user=User.objects(email="s1@t.com").first()).first()
     assert allocation.bed.room.number == "102"
-    assert db.query(Bed).filter_by(occupied=True).count() == 2
-    old_room = db.query(Room).filter_by(number="101").first()
-    assert old_room.free_count() == 1
-    db.close()
+    assert Bed.objects(occupied=True).count() == 2
+    assert Room.objects(number="101").first().free_count() == 1
 
     r = s2.post("/student/checkout")
     assert "Checkout started" in r.text
-    r = warden.post("/warden/checkouts/1/confirm")
+    r = warden.post("/warden/checkouts/" + str(Checkout.objects.first().id) + "/confirm")
     assert "bed is vacant now" in r.text
 
-    db = SessionLocal()
-    assert db.query(Bed).filter_by(occupied=True).count() == 1
-    db.close()
+    assert Bed.objects(occupied=True).count() == 1
 
     r = s2.get("/student/checkout")
     assert "do not have a room" in r.text
     r = s2.get("/student")
     assert "checked out" in r.text
     assert "You have checked out and your bed is vacant now" in r.text
-    db = SessionLocal()
-    s2_user = db.query(User).filter_by(email="s2@t.com").first()
-    assert db.query(Allocation).filter_by(user_id=s2_user.id).first().status == "Cancelled"
-    db.close()
+    s2_user = User.objects(email="s2@t.com").first()
+    assert Allocation.objects(user=s2_user).first().status == "Cancelled"
 
 
 def test_edit_room_capacity():
     office = login("office@t.com")
-    db = SessionLocal()
-    room = db.query(Room).filter_by(number="102").first()
-    room_id = room.id
-    db.close()
+    room_id = Room.objects(number="102").first().id
     r = office.post("/office/rooms/" + str(room_id) + "/edit", data={"capacity": "1", "room_type": "Standard"})
     assert "Room updated" in r.text
 
@@ -202,11 +174,10 @@ def test_inventory_and_hostel_status():
     assert "Hostel Inventory" in office.get("/inventory").text
     assert "Hostel Inventory" in login("warden@t.com").get("/inventory").text
     assert login("s3@t.com").get("/inventory").status_code == 403
-    db = SessionLocal()
-    hostel_id = db.query(Hostel).first().id
-    db.query(Bed).first().occupied = True
-    db.commit()
-    db.close()
+    hostel_id = Hostel.objects.first().id
+    bed = Bed.objects.first()
+    bed.occupied = True
+    bed.save()
     r = office.post("/office/hostels/" + str(hostel_id) + "/edit", data={"name": "Test Hostel", "floors": 1, "status": "Inactive"})
     assert "students living" in r.text
 

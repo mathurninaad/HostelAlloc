@@ -7,10 +7,12 @@ Students apply for hostel rooms online, the hostel office sets up hostels and ru
 ## Tech used
 
 - FastAPI
-- SQLAlchemy with SQLite
+- MongoDB with MongoEngine
 - Jinja2 templates and a small CSS file
 
 ## How to run
+
+MongoDB should be installed and running on the default port (27017). To use another server set the `MONGO_URL` environment variable, for example `mongodb://localhost:27017/hostelalloc`.
 
 ```
 pip install -r requirements.txt
@@ -45,6 +47,8 @@ New students can also register from the login page, but only with an @lnmiit.ac.
 Hostel office can also make hostels and rooms Active or Inactive and edit room number and floor. Wardens, office and institute admin can see the Inventory page.
 
 ## Tests
+
+The tests use `mongomock`, so MongoDB does not have to be running.
 
 ```
 pytest

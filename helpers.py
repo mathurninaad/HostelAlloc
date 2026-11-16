@@ -4,9 +4,8 @@ from datetime import date
 from fastapi import Depends, HTTPException, Request
 from fastapi.responses import RedirectResponse
 from fastapi.templating import Jinja2Templates
-from sqlalchemy.orm import Session
-from database import get_db
-from models import User, Notification, AuditLog, Cycle, Allocation, Bed, Room, Hostel
+from bson import ObjectId
+from models import User, Notification, AuditLog, Cycle, Allocation, Bed, Room
 
 templates = Jinja2Templates(directory="templates")
 
@@ -37,10 +36,15 @@ def render(request: Request, name, **data):
     return templates.TemplateResponse(request, name, data)
 
 
+def find(model, item_id):
+    if not item_id or not ObjectId.is_valid(str(item_id)):
+        return None
+    return model.objects(id=item_id).first()
+
+
 def login_required(*roles):
-    def check(request: Request, db: Session = Depends(get_db)):
-        user_id = request.session.get("user_id")
-        user = db.get(User, user_id) if user_id else None
+    def check(request: Request):
+        user = find(User, request.session.get("user_id"))
         if user is None or not user.active:
             raise HTTPException(status_code=401)
         if roles and user.role not in roles:
@@ -50,16 +54,16 @@ def login_required(*roles):
     return check
 
 
-def notify(db, user_id, message):
-    db.add(Notification(user_id=user_id, message=message))
+def notify(user, message):
+    Notification(user=user, message=message).save()
 
 
-def log(db, user_id, action):
-    db.add(AuditLog(user_id=user_id, action=action))
+def log(user, action):
+    AuditLog(user=user, action=action).save()
 
 
-def current_cycle(db):
-    return db.query(Cycle).order_by(Cycle.id.desc()).first()
+def current_cycle():
+    return Cycle.objects.order_by("-id").first()
 
 
 def window_open(cycle):
@@ -68,35 +72,30 @@ def window_open(cycle):
     return cycle.start_date <= date.today() <= cycle.end_date
 
 
-def active_allocation(db, user_id):
-    return (
-        db.query(Allocation)
-        .filter(Allocation.user_id == user_id, Allocation.status.in_(ACTIVE_STATUSES))
-        .order_by(Allocation.id.desc())
-        .first()
-    )
+def active_allocation(user):
+    return Allocation.objects(user=user, status__in=ACTIVE_STATUSES).order_by("-id").first()
 
 
-def eligibility_problem(db, user):
+def eligibility_problem(user):
     if not user.active:
         return "Your account is not active"
-    if active_allocation(db, user.id):
+    if active_allocation(user):
         return "You already have a room allocated"
     return None
 
 
-def find_vacant_bed(db, hostel_id=None, room_id=None):
-    query = (
-        db.query(Bed)
-        .join(Room, Bed.room_id == Room.id)
-        .join(Hostel, Room.hostel_id == Hostel.id)
-        .filter(Bed.occupied == False, Room.status == "Active", Hostel.status == "Active")
-    )
-    if hostel_id:
-        query = query.filter(Room.hostel_id == hostel_id)
-    if room_id:
-        query = query.filter(Room.id == room_id)
-    return query.order_by(Room.id, Bed.number).first()
+def find_vacant_bed(hostel=None, room=None):
+    if room is not None:
+        rooms = [room] if room.is_active() else []
+    else:
+        rooms = [r for r in Room.objects(status="Active").order_by("id") if r.hostel.status == "Active"]
+        if hostel is not None:
+            rooms = [r for r in rooms if r.hostel.id == hostel.id]
+    for r in rooms:
+        bed = Bed.objects(room=r, occupied=False).order_by("number").first()
+        if bed:
+            return bed
+    return None
 
 
 def bed_text(bed):

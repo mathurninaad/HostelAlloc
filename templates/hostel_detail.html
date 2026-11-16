@@ -11,7 +11,7 @@
     <select name="warden_id">
         <option value="">None</option>
         {% for w in wardens %}
-        <option value="{{ w.id }}" {% if hostel.warden_id == w.id %}selected{% endif %}>{{ w.name }}</option>
+        <option value="{{ w.id }}" {% if hostel.warden and hostel.warden.id == w.id %}selected{% endif %}>{{ w.name }}</option>
         {% endfor %}
     </select>
     <label>Status</label>

@@ -1,8 +1,9 @@
 fastapi
 uvicorn
-sqlalchemy
+mongoengine
 jinja2
 python-multipart
 itsdangerous
 httpx
 pytest
+mongomock
